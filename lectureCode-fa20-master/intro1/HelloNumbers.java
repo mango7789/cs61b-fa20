@@ -6,7 +6,7 @@ public class HelloNumbers {
 			x = x + 1;
 		}
 
-		x = "horse";
+		// x = "horse";
 	}
 }
 

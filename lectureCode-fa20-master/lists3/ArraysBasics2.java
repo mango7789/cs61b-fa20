@@ -2,7 +2,7 @@
  *  @author Josh Hug
  */
 
-public class ArrayBasics2 {
+public class ArraysBasics2 {
 	/** ArrayBasics
 	 */
 
@@ -22,7 +22,6 @@ public class ArrayBasics2 {
 		matrix = new int[4][];
 		matrix = new int[4][4]; 
 
-		int[][] pascalAgain = new int[][]{{1}, {1, 1}, 
-		                                  {1, 2, 1}, {1, 3, 3, 1}};
+		int[][] pascalAgain = new int[][]{{1}, {1, 1}, {1, 2, 1}, {1, 3, 3, 1}};
 	}
 } 

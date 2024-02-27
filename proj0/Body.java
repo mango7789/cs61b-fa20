@@ -42,9 +42,6 @@ public class Body {
 
     public double calcForceExertedByX(Body b) {
         double total_f = this.calcForceExertedBy(b);
-        if (total_f == 0) {
-            return 0;
-        }
         double dx = this.xxPos - b.xxPos;
         double dist = this.calcDistance(b);
         double f_x = total_f * dx / dist;
@@ -56,9 +53,6 @@ public class Body {
 
     public double calcForceExertedByY(Body b) {
         double total_f = this.calcForceExertedBy(b);
-        if (total_f == 0) {
-            return 0;
-        }
         double dy = this.yyPos - b.yyPos;
         double dist = this.calcDistance(b);
         double f_y = total_f * dy / dist;
@@ -72,7 +66,11 @@ public class Body {
         double forces_x = 0;
         for(int i = 0; i < b.length; i++) {
             Body curr_body = b[i];
-            forces_x += this.calcForceExertedByX(curr_body);
+            if (this.equals(curr_body)) {
+                continue;
+            } else {
+                forces_x += this.calcForceExertedByX(curr_body);
+            }
         }
         return forces_x;
     }
@@ -81,7 +79,11 @@ public class Body {
         double forces_y = 0;
         for(int i = 0; i < b.length; i++) {
             Body curr_body = b[i];
-            forces_y += this.calcForceExertedByY(curr_body);
+            if (this.equals(curr_body)) {
+                continue;
+            } else {
+                forces_y += this.calcForceExertedByY(curr_body);
+            }
         }
         return forces_y;
     }

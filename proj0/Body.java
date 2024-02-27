@@ -88,4 +88,12 @@ public class Body {
         return forces_y;
     }
 
+    public void update(double t, double force_x, double force_y) {
+        double a_x = force_x / this.mass, a_y = force_y / this.mass;
+        this.xxVel += t * a_x;
+        this.yyVel += t * a_y;
+        this.xxPos += t * this.xxVel;
+        this.yyPos += t * this.yyVel;
+    }
+    
 }

@@ -24,4 +24,66 @@ public class Body {
         this.imgFileName = b.imgFileName;
     }
 
+    public double calcDistance(Body b) {
+        double dist = Math.sqrt(Math.pow(this.xxPos - b.xxPos, 2) + Math.pow(this.yyPos - b.yyPos, 2)); 
+        return dist;
+    }
+
+    public double calcForceExertedBy(Body b) {
+        if (this.equals(b)) {
+            return 0;
+        } else {
+            double dist = calcDistance(b);
+            double G = 6.67 * 1e-11;
+            double f = G * this.mass * b.mass / Math.pow(dist, 2);
+            return f;
+        }
+    }
+
+    public double calcForceExertedByX(Body b) {
+        double total_f = this.calcForceExertedBy(b);
+        if (total_f == 0) {
+            return 0;
+        }
+        double dx = this.xxPos - b.xxPos;
+        double dist = this.calcDistance(b);
+        double f_x = total_f * dx / dist;
+        if (f_x < 0) {
+            f_x = -f_x;
+        }
+        return f_x;
+    }
+
+    public double calcForceExertedByY(Body b) {
+        double total_f = this.calcForceExertedBy(b);
+        if (total_f == 0) {
+            return 0;
+        }
+        double dy = this.yyPos - b.yyPos;
+        double dist = this.calcDistance(b);
+        double f_y = total_f * dy / dist;
+        if (f_y < 0) {
+            f_y = -f_y;
+        }
+        return f_y;
+    }
+
+    public double calcNetForceExertedByX(Body[] b) {
+        double forces_x = 0;
+        for(int i = 0; i < b.length; i++) {
+            Body curr_body = b[i];
+            forces_x += this.calcForceExertedByX(curr_body);
+        }
+        return forces_x;
+    }
+
+    public double calcNetForceExertedByY(Body[] b) {
+        double forces_y = 0;
+        for(int i = 0; i < b.length; i++) {
+            Body curr_body = b[i];
+            forces_y += this.calcForceExertedByY(curr_body);
+        }
+        return forces_y;
+    }
+
 }

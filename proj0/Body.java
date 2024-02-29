@@ -42,23 +42,17 @@ public class Body {
 
     public double calcForceExertedByX(Body b) {
         double total_f = this.calcForceExertedBy(b);
-        double dx = this.xxPos - b.xxPos;
+        double dx = b.xxPos - this.xxPos;
         double dist = this.calcDistance(b);
         double f_x = total_f * dx / dist;
-        if (f_x < 0) {
-            f_x = -f_x;
-        }
         return f_x;
     }
 
     public double calcForceExertedByY(Body b) {
         double total_f = this.calcForceExertedBy(b);
-        double dy = this.yyPos - b.yyPos;
+        double dy = b.yyPos - this.yyPos;
         double dist = this.calcDistance(b);
         double f_y = total_f * dy / dist;
-        if (f_y < 0) {
-            f_y = -f_y;
-        }
         return f_y;
     }
 
@@ -96,4 +90,8 @@ public class Body {
         this.yyPos += t * this.yyVel;
     }
     
+    public void draw() {
+        String image_path = "images/" + this.imgFileName;
+        StdDraw.picture(this.xxPos, this.yyPos, image_path);
+    }
 }

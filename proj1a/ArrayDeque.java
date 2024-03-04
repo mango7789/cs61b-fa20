@@ -3,13 +3,13 @@ public class ArrayDeque<T> {
     public T[] deque;
 
     public ArrayDeque() {
-        int head = -1, tail = 0, size = 8;
-        T[] deque = (T[]) new Object[size];
+        size = 8; head = size - 1; tail = 0;
+        deque = (T[]) new Object[size];
     };
 
 
     public void addFirst(T item) {
-        if (head == -1) {
+        if (head == 0) {
             head = size - 1;
             deque[0] = item;
         }
@@ -18,50 +18,32 @@ public class ArrayDeque<T> {
             head--;
         }
         // resize
-        if (head == -1) {
-            if (tail == size) {
-                resize();
-            }
-        }
-        else {
-            if (head + 1 == tail) {
-                resize();
-            }
-        }
+        resize();
     };
 
     public void addLast(T item) {
-        if (tail == size) {
+        if (tail == size - 1) {
             tail = 0;
-            deque[0] = item;
+            deque[size - 1] = item;
         }
         else {
-            deque[tail-1] = item;
+            deque[tail] = item;
             tail++;
         }
         // resize
-        if (tail == size) {
-            if (head == -1) {
-                resize();
-            }
-        }
-        else {
-            if (head + 1 == tail) {
-                resize();
-            }
-        }
+        resize();
     };
 
     public boolean isEmpty() {
-        return (size == 0);
+        return (size() == 0);
     };
 
     public int size() {
-        return size;
+        return head <= tail - 1 ? tail - head - 1 : size - (head + 1) + tail;
     }
 
     public void printDeque() {
-        if (head < tail - 1) {
+        if (head <= tail - 1) {
             for(int i = head + 1; i < tail; i++) {
                 System.out.println(deque[i]);
             }
@@ -70,7 +52,7 @@ public class ArrayDeque<T> {
             for(int j = head + 1; j < size; j++) {
                 System.out.println(deque[j]);
             }
-            for(int k = 0; k < tail - 1; k++) {
+            for(int k = 0; k < tail; k++) {
                 System.out.println(deque[k]);
             }
         }
@@ -78,11 +60,27 @@ public class ArrayDeque<T> {
     };
 
     public T removeFirst() {
-
+        if (head == size - 1) {
+            head = 0;
+        }
+        else {
+            head += 1;
+        }
+        T removed = deque[head];
+        resize();
+        return removed;
     };
 
     public T removeLast() {
-
+        if (tail == 0) {
+            tail = size - 1;
+        }
+        else {
+            tail -= 1;
+        }
+        T removed = deque[tail];
+        resize();
+        return removed;
     };
 
     public T get(int index) {
@@ -95,7 +93,35 @@ public class ArrayDeque<T> {
     };
 
     public void resize() {
-
+        if (size == 8) {
+            return;
+        }
+        int total_len = size();
+        int new_size;
+        // check if we need resize
+        if (total_len == size) {
+            new_size = size * 2;
+        }
+        else if (2 * total_len < size) {
+            new_size = (int) size / 2;
+        }
+        else {
+            return;
+        }
+        // create a new deque, use arraycopy to implement the resize
+        T[] new_deque = (T[]) new Object[new_size];
+        if (head < tail - 1) {
+            System.arraycopy(deque, head + 1, new_deque, 0, total_len);
+        }
+        else if (head == tail - 1) {
+            return;
+        }
+        else {
+            int latter_len = size - (head + 1);
+            System.arraycopy(deque, head + 1, new_deque, 0, latter_len);
+            System.arraycopy(deque, 0, new_deque, latter_len, tail);
+        }
+        deque = new_deque; size = new_size; head = size - 1; tail = total_len;
     };
 
 }

@@ -12,12 +12,11 @@ public class WordUtils {
       return list.get(maxDex);
    }
 
-    public static void main(String[] args) {
-     List61B<String> someList = new SLList<>();
-     someList.addLast("elk");
-     someList.addLast("are");
-     someList.addLast("watching");
-     System.out.println(longest(someList));
-  }
+   public static void main(String[] args) {
+      List61B<String> someList = new SLList<>();
+      someList.addLast("elk");
+      someList.addLast("are");
+      someList.addLast("watching");
+      System.out.println(longest(someList));
+   }
 }
-

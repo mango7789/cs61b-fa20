@@ -99,7 +99,7 @@ public class ArrayDeque<T> {
         int total_len = size();
         int new_size;
         // check if we need resize
-        if (total_len == size) {
+        if (total_len == size - 1) {
             new_size = size * 2;
         }
         else if (2 * total_len < size) {

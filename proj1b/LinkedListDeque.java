@@ -76,6 +76,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         T item = tail.prev.item;
         tail.prev = tail.prev.prev;
         tail.prev.next = tail;
+        size--;
         return item;
     };
 

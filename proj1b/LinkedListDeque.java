@@ -1,14 +1,14 @@
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     private class Node {
         public T item;
-		public Node prev;
+        public Node prev;
         public Node next;
 
-		public Node(T i, Node p, Node n) {
-			item = i;
-			prev = p;
+        public Node(T i, Node p, Node n) {
+            item = i;
+            prev = p;
             next = n;
-		}
+        }
     }
 
     public Node head;
@@ -31,6 +31,7 @@ public class LinkedListDeque<T> {
         size = 1;
     }
 
+    @Override
     public void addFirst(T item) {
         Node first = new Node(item, head, head.next);
         head.next.prev = first;
@@ -38,6 +39,7 @@ public class LinkedListDeque<T> {
         size++;
     };
 
+    @Override
     public void addLast(T item) {
         Node last = new Node(item, tail.prev, tail);
         tail.prev.next = last;
@@ -45,14 +47,12 @@ public class LinkedListDeque<T> {
         size++;
     };
 
-    public boolean isEmpty() {
-        return (size == 0);
-    }
-
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void printDeque() {
         Node pointer = head.next;
         while (pointer != tail) {
@@ -62,6 +62,7 @@ public class LinkedListDeque<T> {
         return;
     };
 
+    @Override
     public T removeFirst() {
         T item = head.next.item;
         head.next = head.next.next;
@@ -70,6 +71,7 @@ public class LinkedListDeque<T> {
         return item;
     };
 
+    @Override
     public T removeLast() {
         T item = tail.prev.item;
         tail.prev = tail.prev.prev;
@@ -77,6 +79,7 @@ public class LinkedListDeque<T> {
         return item;
     };
 
+    @Override
     public T get(int index) {
         assert index >= 0;
         Node pointer = head.next;
@@ -91,8 +94,7 @@ public class LinkedListDeque<T> {
         assert index >= 0;
         if (index == 0) {
             return head.next.item;
-        }
-        else {
+        } else {
             return getRecursive(index - 1, head.next);
         }
     }

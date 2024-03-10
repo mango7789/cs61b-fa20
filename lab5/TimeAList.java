@@ -23,6 +23,9 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+        List<Integer> Ns = new List<>[8];
+        List<Double> times = new List<Double>[8];
+
     }
 
 

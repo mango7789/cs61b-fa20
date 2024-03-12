@@ -23,9 +23,12 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
-        List<Integer> Ns = new List<>[8];
-        List<Double> times = new List<Double>[8];
+        List<Integer> Ns = new ArrayList<>(8);
+        List<Double> times = new ArrayList<>(8);
+        List<Integer> opCounts = new ArrayList<>(8);
+        
 
+        printTimingTable(Ns, times, opCounts);
     }
 
 

@@ -5,7 +5,7 @@ import java.util.Iterator;
 //TODO: Make sure to add the override tag for all overridden methods
 //TODO: Make sure to make this class implement BoundedQueue<T>
 
-public class ArrayRingBuffer<T>  {
+public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;
     /* Index for the next enqueue. */
@@ -19,8 +19,9 @@ public class ArrayRingBuffer<T>  {
      * Create a new ArrayRingBuffer with the given capacity.
      */
     public ArrayRingBuffer(int capacity) {
-        // TODO: Create new array with capacity elements.
-        //       first, last, and fillCount should all be set to 0.
+        first = 0; last = 0; fillCount = 0;
+        this.capacity = capacity;
+        rb = (T[]) new Object[capacity];
     }
 
     /**
@@ -31,6 +32,14 @@ public class ArrayRingBuffer<T>  {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update
         //       last. Don't worry about throwing the RuntimeException until you
         //       get to task 4.
+        rb[last] = x;
+        if (last == capacity - 1) {
+            last = 0;
+        } else {
+            last++;
+        }
+        
+        fillCount += 1;
         return;
     }
 
@@ -42,7 +51,14 @@ public class ArrayRingBuffer<T>  {
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and
         //       update first. Don't worry about throwing the RuntimeException until you
         //       get to task 4.
-        return null;
+        T first_item = rb[first];
+        if (first == capacity - 1) {
+            first = 0;
+        } else {
+            first++;
+        }
+        fillCount--;
+        return first_item;
     }
 
     /**
@@ -53,8 +69,9 @@ public class ArrayRingBuffer<T>  {
         // TODO: Return the first item. None of your instance variables should
         //       change. Don't worry about throwing the RuntimeException until you
         //       get to task 4.
-        return null;
+        return rb[first];
     }
+
 
     // TODO: When you get to part 4, implement the needed code to support
     //       iteration and equals.

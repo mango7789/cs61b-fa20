@@ -6,7 +6,7 @@ import java.util.Iterator;
 //TODO: Make sure to add the override tag for all overridden methods
 //TODO: Make sure to make this class implement BoundedQueue<T>
 
-public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
+public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;
     /* Index for the next enqueue. */
@@ -23,10 +23,22 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         first = 0;
         last = 0;
         fillCount = 0;
-        this.capacity = capacity;
         rb = (T[]) new Object[capacity];
     }
 
+
+    @Override
+    public int capacity() {
+        return rb.length;
+    }
+
+    /**
+     * Return the number of items currently in the ring buffer.
+     */
+    @Override
+    public int fillCount() {
+        return fillCount;
+    }
     /**
      * Adds x to the end of the ring buffer. If there is no room, then
      * throw new RuntimeException("Ring buffer overflow").
@@ -36,8 +48,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update
         // last. Don't worry about throwing the RuntimeException until you
         // get to task 4.
+        if (isFull()) {
+            throw new RuntimeException("Ring Buffer overflow");
+        }
         rb[last] = x;
-        last = (last + 1) % capacity;
+        last = (last + 1) % capacity();
         fillCount += 1;
         return;
     }
@@ -51,8 +66,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and
         // update first. Don't worry about throwing the RuntimeException until you
         // get to task 4.
+        if (isEmpty()) {
+            throw new RuntimeException("Ring Buffer underflow");
+        }
         T first_item = rb[first];
-        first = (first + 1) % capacity;
+        first = (first + 1) % capacity();
         fillCount--;
         return first_item;
     }
@@ -70,10 +88,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     // TODO: When you get to part 4, implement the needed code to support
-    // iteration and equals. 
+    // iteration and equals.
     private class ArrayRingBufferIterator implements Iterator<T> {
         private int pos;
         private int curNum;
+
         public ArrayRingBufferIterator() {
             pos = first;
             curNum = 0;
@@ -85,7 +104,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
         public T next() {
             T retValue = rb[pos];
-            pos = (pos + 1) % capacity;
+            pos = (pos + 1) % capacity();
             curNum++;
             return retValue;
         }
@@ -94,6 +113,14 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     @Override
     public Iterator<T> iterator() {
         return new ArrayRingBufferIterator();
+    }
+
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        return false;
+
     }
 }
 // TODO: Remove all comments that say TODO when you're done.

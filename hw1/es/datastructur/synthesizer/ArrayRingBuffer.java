@@ -26,7 +26,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         rb = (T[]) new Object[capacity];
     }
 
-
     @Override
     public int capacity() {
         return rb.length;
@@ -39,6 +38,7 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     public int fillCount() {
         return fillCount;
     }
+
     /**
      * Adds x to the end of the ring buffer. If there is no room, then
      * throw new RuntimeException("Ring buffer overflow").
@@ -119,7 +119,24 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         if (other == this) {
             return true;
         }
-        return false;
+        if (other == null) {
+            return false;
+        }
+        if (other.getClass() != this.getClass()) {
+            return false;
+        }
+        Iterator<T> this_buffer = this.iterator();
+        ArrayRingBuffer<T> o = (ArrayRingBuffer<T>) other;
+        if (this.fillCount() != o.fillCount()) {
+            return false;
+        }
+        Iterator<T> other_buffer = o.iterator();
+        while (this_buffer.hasNext() && other_buffer.hasNext()) {
+            if (this_buffer.next() != other_buffer.next()) {
+                return false;
+            }
+        }
+        return true;
 
     }
 }

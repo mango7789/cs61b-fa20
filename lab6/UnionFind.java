@@ -46,18 +46,23 @@ public class UnionFind {
     public void connect(int v1, int v2) {
         int Root1, Root2;
         Root1 = find(v1); Root2 = find(v2);
+        // if they're already connected, just execute path compression
         if (Root1 == Root2) {
-            parent[v1] = parent[v2] = Root1;
+            parent[v1] = parent[v1] > 0 ? Root1 : parent[v1];
+            parent[v2] = parent[v2] > 0 ? Root2 : parent[v2];
             return;
         }
-        // break the tie by connecting v1 to v2
+        // break the tie by connecting root1 to root2
         if (parent[Root1] == parent[Root2]) {
             parent[Root2] += parent[Root1];
-            parent[v1] = parent[v2] = parent[Root1] = Root2;
+            parent[v1] = parent[Root1] = Root2;
+            parent[v2] = parent[v2] > 0 ? Root2 : parent[v2];
         }
+        // o.w. connect root2 to root1
         else {
             parent[Root1] += parent[Root2];
-            parent[v1] = parent[v2] = parent[Root2] = Root1;
+            parent[v2] = parent[Root2] = Root1;
+            parent[v1] = parent[v1] > 0 ? Root1 : parent[v1];
         }
 
 

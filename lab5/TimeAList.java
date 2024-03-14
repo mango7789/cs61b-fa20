@@ -7,7 +7,7 @@ import java.util.List;
 public class TimeAList {
     private static void printTimingTable(List<Integer> Ns, List<Double> times, List<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
-        System.out.printf("------------------------------------------------------------\n");
+        System.out.print("------------------------------------------------------------\n");
         for (int i = 0; i < Ns.size(); i += 1) {
             int N = Ns.get(i);
             double time = times.get(i);
@@ -22,11 +22,22 @@ public class TimeAList {
     }
 
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
-        List<Integer> Ns = new ArrayList<>(8);
-        List<Double> times = new ArrayList<>(8);
-        List<Integer> opCounts = new ArrayList<>(8);
-        
+        int[] ArrayN = new int[]{1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000};
+        List<Integer> Ns = new ArrayList<>();
+        List<Double> times = new ArrayList<>();
+        List<Integer> opCounts = new ArrayList<>();
+
+        for (int k : ArrayN) {
+            AList<Double> TestAlist = new AList<Double>();
+            Stopwatch sw = new Stopwatch();
+            for (int j = 0; j < k; j++) {
+                TestAlist.addLast(5.4);
+            }
+            double timeInSeconds = sw.elapsedTime();
+            Ns.add(k);
+            times.add(timeInSeconds);
+            opCounts.add(k);
+        }
 
         printTimingTable(Ns, times, opCounts);
     }

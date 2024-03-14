@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private boolean[][] grid;
-    private int N;
+    private int size;
     private int top;
     private int down;
     private int numOpenSites = 0;
@@ -17,7 +17,7 @@ public class Percolation {
         if (N <= 0) {
             throw new IllegalArgumentException();
         }
-        N = N;
+        size = N;
         grid = new boolean[N][N];
         top = 0; down = N * N + 1;
         uf = new WeightedQuickUnionUF(down + 1);
@@ -25,13 +25,13 @@ public class Percolation {
     };
 
     private void check_index(int row, int col) {
-        if (row < 0 || row > N - 1 || col < 0 || col > N - 1) {
+        if (row < 0 || row > size - 1 || col < 0 || col > size - 1) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     public int xyTo1D(int row, int col) {
-        return row * N + col + 1;
+        return row * size + col + 1;
     }
 
     public void open(int row, int col) {
@@ -47,17 +47,19 @@ public class Percolation {
             uf.union(Curr1D, top);
             ufExcludeDown.union(xyTo1D(row, col), top);
         }
-        if (row == N - 1) {
+        if (row == size - 1) {
             uf.union(Curr1D, down);
         }
         // union with the neighbors
         for (int[] neighbor : neighbors) {
             int AdjRow = row + neighbor[0];
             int AdjCol = col + neighbor[1];
-            if (AdjRow >= 0 && AdjRow < N && AdjCol >= 0 && AdjCol < N) {
-                int AdjCurr1D = xyTo1D(AdjRow, AdjCol);
-                uf.union(Curr1D, AdjCurr1D);
-                ufExcludeDown.union(Curr1D, AdjCurr1D);
+            if (AdjRow >= 0 && AdjRow < size && AdjCol >= 0 && AdjCol < size) {
+                if (isOpen(AdjRow, AdjCol)) {
+                    int AdjCurr1D = xyTo1D(AdjRow, AdjCol);
+                    uf.union(Curr1D, AdjCurr1D);
+                    ufExcludeDown.union(Curr1D, AdjCurr1D);
+                }
             }
         }
     };

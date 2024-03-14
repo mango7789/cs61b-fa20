@@ -17,6 +17,7 @@
  ******************************************************************************/
 package hw2;
 import java.awt.Font;
+import java.io.File;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
@@ -24,7 +25,7 @@ import edu.princeton.cs.algs4.StdDraw;
 public class PercolationVisualizer {
 
     // delay in miliseconds (controls animation speed)
-    private static final int DELAY = 100;
+    private static final int DELAY = 10;
 
     // draw N-by-N percolation system
     public static void draw(Percolation perc, int N) {
@@ -78,10 +79,24 @@ public class PercolationVisualizer {
             draw(perc, N);
             StdDraw.show(DELAY);
         }
+        StdDraw.save("outputFiles/" + filename.split("/")[1].split("\\.")[0] + ".png");
     }
 
     public static void main(String[] args) {
-        String filename = args[0];
-        simulateFromFile(filename);
+
+        // get the file names of the txt in inputFiles and simulate
+        String directoryPath = "inputFiles";
+        File directory = new File(directoryPath);
+        String[] filenames = directory.list();
+        for (String filename : filenames) {
+            simulateFromFile(directoryPath + "/" + filename);
+        }
+
+        // check confidence interval
+        int N = 10, T = 10;
+        PercolationFactory pf = new PercolationFactory();
+        PercolationStats pfs = new PercolationStats(N, T, pf);
+        System.out.println("The confidence interval is: [" + pfs.confidenceLow() + ", " + pfs.confidenceHigh() + "].");
+
     }
 }

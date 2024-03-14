@@ -21,7 +21,6 @@ public class Percolation {
         grid = new boolean[N][N];
         top = 0; down = N * N + 1;
         uf = new WeightedQuickUnionUF(down + 1);
-        ufExcludeDown = new WeightedQuickUnionUF(down);
     };
 
     private void check_index(int row, int col) {
@@ -45,7 +44,6 @@ public class Percolation {
 
         if (row == 0) {
             uf.union(Curr1D, top);
-            ufExcludeDown.union(xyTo1D(row, col), top);
         }
         if (row == size - 1) {
             uf.union(Curr1D, down);
@@ -58,7 +56,6 @@ public class Percolation {
                 if (isOpen(AdjRow, AdjCol)) {
                     int AdjCurr1D = xyTo1D(AdjRow, AdjCol);
                     uf.union(Curr1D, AdjCurr1D);
-                    ufExcludeDown.union(Curr1D, AdjCurr1D);
                 }
             }
         }

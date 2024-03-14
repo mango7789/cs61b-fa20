@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4cd14584-819f-488e-98b4-72b374145cbf" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AListFloorSet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab5FloorSet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SLList$IntNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SLList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AList.java" beforeDir="false" afterPath="$PROJECT_DIR$/AList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AListFloorSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/AListFloorSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestRedBlackFloorSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/TestRedBlackFloorSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TimeAList.java" beforeDir="false" afterPath="$PROJECT_DIR$/TimeAList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab5.iml" beforeDir="false" afterPath="$PROJECT_DIR$/lab5.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeSLList.java" beforeDir="false" afterPath="$PROJECT_DIR$/TimeSLList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,10 +39,11 @@
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
     "应用程序.StopwatchDemo.executor": "Run",
-    "应用程序.TimeAList.executor": "Run"
+    "应用程序.TimeAList.executor": "Run",
+    "应用程序.TimeSLList.executor": "Run"
   }
 }]]></component>
-  <component name="RunManager" selected="应用程序.TimeAList">
+  <component name="RunManager" selected="JUnit.TestRedBlackFloorSet.randomizedTest">
     <configuration name="StopwatchDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="StopwatchDemo" />
       <module name="lab5" />
@@ -59,8 +58,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TimeSLList" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TimeSLList" />
+      <module name="lab5" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestRedBlackFloorSet.randomizedTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="lab5" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestRedBlackFloorSet" />
+      <option name="METHOD_NAME" value="randomizedTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TestRedBlackFloorSet.randomizedTest" />
+        <item itemvalue="应用程序.TimeSLList" />
         <item itemvalue="应用程序.TimeAList" />
         <item itemvalue="应用程序.StopwatchDemo" />
       </list>

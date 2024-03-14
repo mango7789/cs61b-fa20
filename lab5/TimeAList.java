@@ -31,7 +31,7 @@ public class TimeAList {
             AList<Double> TestAlist = new AList<Double>();
             Stopwatch sw = new Stopwatch();
             for (int j = 0; j < k; j++) {
-                TestAlist.addLast(5.4);
+                TestAlist.getLast();
             }
             double timeInSeconds = sw.elapsedTime();
             Ns.add(k);

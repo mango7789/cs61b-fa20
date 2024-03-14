@@ -71,7 +71,7 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         check_index(row, col);
-        return ufExcludeDown.connected(xyTo1D(row, col), top);
+        return uf.connected(xyTo1D(row, col), top);
     };
 
     public int numberOfOpenSites() {

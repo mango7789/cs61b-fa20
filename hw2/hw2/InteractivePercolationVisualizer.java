@@ -16,7 +16,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class InteractivePercolationVisualizer {
     private static final int DELAY = 20;
 
-    public static void main(String[] args) {
+    public static void main(@org.jetbrains.annotations.NotNull String[] args) {
         // N-by-N percolation system (read from command-line, default = 10)
         int N = 10;
         if (args.length == 1) {
@@ -38,8 +38,8 @@ public class InteractivePercolationVisualizer {
             if (StdDraw.mousePressed()) {
 
                 // screen coordinates
-                double x = StdDraw.mouseX();
                 double y = StdDraw.mouseY();
+                double x = StdDraw.mouseX();
 
                 // convert to row i, column j
                 int i = (int) (N - Math.floor(y) - 1);

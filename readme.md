@@ -6,6 +6,8 @@
 - [4. SLLists, Nested Classes, Sentinel Nodes](#4-sllists-nested-classes-sentinel-nodes)
 - [5. DLLists, Arrays](#5-dllists-arrays)
 - [6. ALists, Resizing, vs. SLists](#6-alists-resizing-vs-slists)
+- [7. Testing](#7-testing)
+- [8. Inheritance, Implements](#8-inheritance-implements)
   
 #### 1. Intro Hello World Java
 
@@ -115,6 +117,84 @@
 
 - A Last Look at Linked Lists
 - Naive Array Lists
+- Resizing Arrays
+  - This is how the Python list is implemented
+    ```java
+    public void addLast(int x) {
+      if (size == items.length) {
+      resize(size * RFACTOR);
+      }
+      items[size] = x;
+      size += 1;
+    }
+
+    ```
+  - Memory Efficiency
+    - Define the “usage ratio” R = size / items.length
+    - Typical solution: Half array size when R < 0.25.
+- Generic ALists
+  - When creating an array of references to Glorps:
+    - `(Glorp []) new Object[cap]`;
+    - Causes a compiler warning, which you should ignore.
+  - Why not just `new Glorp[cap]`;
+    - Will cause a “generic array creation” error.
+  - Nulling Out Deleted Items
+    - Java only destroys unwanted objects when the last reference has been lost.
+    - Keeping references to unneeded objects is sometimes called loitering.
+- Obscurantism in Java
+
+
+#### 7. Testing
+
+- Some languages support sub-indexing into arrays. Java does not. **No way to get address of the middle of an array.**
+- For example: `sort(x[1:]);` ← Would be nice, but not possible!
+
+
+#### 8. Inheritance, Implements
+
+- Method Overloading in Java
+  - Java allows multiple methods with same name, but different parameters.
+- Hypernyms, Hyponyms, and Interface Inheritance
+- Overriding vs. Overloading
+  - If a “subclass” has a method with the exact same signature as in the “superclass”, we say the subclass overrides the method.
+  - `@Override Annotation`: The only effect of this tag is that the code won’t compile if it is not actually an overriding method.
+  - Why use `@Override`
+    - Protects against typos. If you say `@Override`, but it the method isn’t actually overriding anything, you’ll get a compile error.
+    - Reminds programmer that method definition came from somewhere higher up in the inheritance hierarchy.
+- Interface Inheritance
+  - Specifying the capabilities of a subclass using the implements keyword is known as interface inheritance.
+    - Interface: The list of all method signatures.
+    - Inheritance: The subclass “inherits” the interface from a superclass.
+    - Specifies what the subclass can do, but not how.
+    - Subclasses must override all of these methods!
+    - Will fail to compile otherwise.
+  - If X is a superclass of Y, then memory boxes for X may contain Y.
+- Implementation Inheritance: Default Methods
+  - Interface inheritance:
+    - Subclass inherits signatures, but NOT implementation.
+  - For better or worse, Java also allows implementation inheritance.
+    - Subclasses can inherit signatures AND implementation.
+  - Use the **default** keyword to specify a method that subclasses should inherit from an interface.
+  - If you don’t like a default method, you can override it.
+- Static and Dynamic Type, Dynamic Method Selection
+  - Every variable in Java has a “compile-time type”, a.k.a. “static type”.
+    - This is the type specified at **declaration**. Never changes!
+  - Variables also have a “run-time type”, a.k.a. “dynamic type”.
+    - This is the type specified at **instantiation** (e.g. when using new).
+    - Equal to the type of the object being pointed at.
+  - Suppose we call a method of an object using a variable with: compile-time type X, run-time type Y.
+    - Then if Y **overrides** the method, Y’s method is used instead.
+    - This is known as “dynamic method selection”.
+- More Dynamic Method Selection, Overloading vs. Overriding
+- Interface vs. Implementation Inheritance
+  - In both cases, we specify “is-a” relationships, not “has-a”.
+
+
+
+
+
+
+
 
 
 

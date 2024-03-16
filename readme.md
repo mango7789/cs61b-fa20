@@ -5,6 +5,7 @@
 - [3. References, Recursion, and Lists](#3-references-recursion-and-lists)
 - [4. SLLists, Nested Classes, Sentinel Nodes](#4-sllists-nested-classes-sentinel-nodes)
 - [5. DLLists, Arrays](#5-dllists-arrays)
+- [6. ALists, Resizing, vs. SLists](#6-alists-resizing-vs-slists)
   
 #### 1. Intro Hello World Java
 
@@ -109,6 +110,11 @@
   - Array indices can be computed at runtime.
   - Class member variable names CANNOT be computed and used at runtime.
   - The only (easy) way to access a member of a class is with hard-coded dot notation.
+
+#### 6. ALists, Resizing, vs. SLists
+
+- A Last Look at Linked Lists
+- Naive Array Lists
 
 
 

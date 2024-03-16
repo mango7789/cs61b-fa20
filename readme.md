@@ -8,6 +8,8 @@
 - [6. ALists, Resizing, vs. SLists](#6-alists-resizing-vs-slists)
 - [7. Testing](#7-testing)
 - [8. Inheritance, Implements](#8-inheritance-implements)
+- [9. Extends, Casting, Higher Order Functions](#9-extends-casting-higher-order-functions)
+- [10. Subtype Polymorphism vs. HoFs](#10-subtype-polymorphism-vs-hofs)
   
 #### 1. Intro Hello World Java
 
@@ -190,8 +192,107 @@
   - In both cases, we specify “is-a” relationships, not “has-a”.
 
 
+#### 9. Extends, Casting, Higher Order Functions
 
+- Implementation Inheritance: Extends
+  - When a class is a hyponym of an interface, we used **implements**.
+  - If you want one class to be a hyponym of another class, you use **extends**.
+  - Because of extends, RotatingSLList inherits all members of SLList:
+    - All instance and static variables.
+    - All methods.
+    - All nested classes.
+    - Constructors are not inherited.
+  - Java syntax disallows `super.super`.
+  - Constructors are not inherited. However, the rules of Java say that **all constructors must start with a call to one of the super class’s constructors**. `super()`
+  - If you don’t explicitly call the constructor, Java will *automatically* do it for you.
+  - If you want to use a super constructor other than the no-argument constructor, can give parameters to super.
+  - As it happens, every type in Java is a descendant of the Object class.
+  - extends should only be used for **is-a** (hypernymic) relationships!
+- Encapsulation
+  - **Module**: A set of methods that work together as a whole to perform some task or set of related tasks. 
+  - A module is said to be **encapsulated** if its implementation is completely hidden, and it can be accessed only through a documented interface.
+  - Java is a great language for enforcing abstraction barriers with syntax.
+  - Implementation inheritance (e.g. extends) breaks encapsulation!
+- Type Checking and Casting
+  - Method calls have compile-time type equal to their declared type.
+  - Casting is a powerful but dangerous tool.
+    - Tells Java to treat an expression as having a different compile-time type.
+    - In example below, effectively tells the compiler to ignore its type checking duties.
+    - Does not actually change anything: sunglasses don’t make the world dark.
+- Dynamic Method Selection and Casting Puzzle
+  - Casting causes no change to the bird variable, nor to the object the bird variable points at!
+  - The compiler chooses the most specific matching method signature from **the static type of the invoking class**.
+  - Since there is no **overriding**, no dynamic method selection occurs.
+- Higher Order Functions (A First Look)
+  - Higher Order Function: A function that treats another function as data. e.g. takes a function as input.
+  - Old School (Java 7 and earlier). Fundamental issue: Memory boxes (variables) cannot contain pointers to functions.
+  - In Java 8, new types were introduced: now can can hold references to methods.
+- **Implementation Inheritance Cheatsheet**
+  - VengefulSLList extends SLList means a VenglefulSLList is-an SLList. Inherits all members!
+    - Variables, methods, nested classes.
+    - Not constructors.
+    - Subclass constructor must invoke superclass constructor first.
+    - Use super to invoke overridden superclass methods and constructors.
+  - Invocation of overridden methods follows two simple rules:
+    - Compiler plays it safe and only lets us do things allowed by **static** type.
+    - For overridden methods the actual method invoked is based on **dynamic** type <span style="color: red">(Does not apply to overloaded methods!)</span> of invoking expression, `e.g. Dog.maxDog(d1, d2).bark()`;
+    - Can use **casting** to overrule compiler type checking.
 
+#### 10. Subtype Polymorphism vs. HoFs
+
+- Dynamic Method Selection Puzzle
+  - What if subclass has a static method with the same signature as a superclass method?
+    - For static methods, we do not use the term overriding for this.
+    - These two practices above are called “hiding”.
+    - As promised, the version of the hidden static method that gets invoked is the one in the superclass, and the version of the overridden instance method that gets invoked is the one in the subclass.
+- Subtype Polymorphism
+- Comparables
+  - Advantages
+    - Lots of built in classes implement Comparable (e.g. String).
+    - Lots of libraries use the Comparable interface (e.g. Arrays.sort)
+    - Avoids need for casts.
+    ```java
+    public class Dog implements Comparable<Dog> {
+      public int compareTo(Dog uddaDog) {
+        return this.size - uddaDog.size;
+      }
+    }
+
+    Dog[] dogs = new Dog[]{d1, d2, d3};
+    Dog largest = Collections.max(Arrays.asList(dogs));
+    ```
+- Comparators
+  ```java
+  public class Dog implements Comparable<Dog> {
+    private String name;
+    private int size;
+  
+    public static class NameComparator implements Comparator<Dog> {
+      public int compare(Dog d1, Dog d2) {
+          return d1.name.compareTo(d2.name);
+      }
+    }
+    ...
+  }
+
+  Comparator<Dog> cd = new Dog.NameComparator();
+  if (cd.compare(d1, d3) > 0) {
+      d1.bark();
+  } else {
+      d3.bark();
+  }
+  ```
+- Comparable and Comparator Summary
+  - Interfaces provide us with the ability to make **callbacks**:
+    - Sometimes a function needs the help of another function that might not have been written yet.
+      - Example: max needs compareTo
+      - The helping function is sometimes called a “callback”.
+  - Some languages handle this using explicit function passing.
+  - In Java, we do this by wrapping up the needed function in an interface (e.g. `Arrays.sort` needs `compare` which lives inside the `comparator` interface)
+  - `Arrays.sort` “calls back” whenever it needs a comparison.
+    - Similar to giving your number to someone if they need information.
+
+ 
 
 
 

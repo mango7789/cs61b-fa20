@@ -14,6 +14,8 @@
 - [12. Coding in the Real World, Review](#12-coding-in-the-real-world-review)
 - [13. Asymptotics I](#13-asymptotics-i)
 - [14. Disjoint Sets](#14-disjoint-sets)
+- [15. Asymptotics II](#15-asymptotics-ii)
+- [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
   
 #### 1. Intro Hello World Java
 
@@ -415,6 +417,44 @@
     |QuickUnionDS | $O(NM)$ |
     |WeightedQuickUnionDS | $O(N+M\log N)$ |
     |WeightedQuickUnionDSWithPathCompression| $O(N+M\alpha (N))$ |
+
+#### 15. Asymptotics II
+
+#### 16. ADTs, Sets, Maps, BSTs
+
+- Abstract Data Types
+  - An Abstract Data Type (ADT) is defined only by its operations, not by its implementation.
+  - Interfaces in Java aren’t purely abstract as they can contain some implementation details, e.g. `default` methods.
+  - Maps also known as associative arrays, associative lists (in Lisp), symbol tables, dictionaries (in Python).
+  ```java
+    Map<String, Integer> m = new TreeMap<>();
+    String[] text = {"sumomo", "mo", "momo", "mo",
+                    "momo", "no", "uchi"};
+    for (String s : text) {
+      int currentCount = m.getOrDefault(s, 0);
+      m.put(s, currentCount + 1);
+    }
+    ```
+  - Among the most important interfaces in the java.util library are those that extend the Collection interface ![](./src/lec16_1.png) 
+- Binary Search Trees
+- BST Definitions
+  - A binary search tree is a rooted binary tree with the BST property.
+  - **BST** Property. For every node X in the tree:
+    - Every key in the **left** subtree is **less** than X’s key.
+    - Every key in the **right** subtree is **greater** than X’s key.
+- BST Operations: Search
+- BST Operations: Insert
+- BST Operations: Delete
+  - Deleting from a BST: Deletion with two Children (Hibbard)
+- Sets vs. Maps, Summary
+  - Java provides Map, Set, List interfaces, along with several implementations.
+  - We’ve seen two ways to implement a Set (or Map): ArraySet and using a BST.
+    - ArraySet: $Θ(N)$ operations in the worst case.
+    - BST: $Θ(\log N)$ operations in the worst case if tree is balanced.
+- BST Implementation Tips 
+  - When inserting, always set left/right pointers, even if nothing is actually changing.
+  - Avoid “arms length base cases”. Don’t check if left or right is null!
+
 
 
 

@@ -10,6 +10,10 @@
 - [8. Inheritance, Implements](#8-inheritance-implements)
 - [9. Extends, Casting, Higher Order Functions](#9-extends-casting-higher-order-functions)
 - [10. Subtype Polymorphism vs. HoFs](#10-subtype-polymorphism-vs-hofs)
+- [11. Exceptions, Iterators, Object Methods](#11-exceptions-iterators-object-methods)
+- [12. Coding in the Real World, Review](#12-coding-in-the-real-world-review)
+- [13. Asymptotics I](#13-asymptotics-i)
+- [14. Disjoint Sets](#14-disjoint-sets)
   
 #### 1. Intro Hello World Java
 
@@ -291,6 +295,128 @@
   - In Java, we do this by wrapping up the needed function in an interface (e.g. `Arrays.sort` needs `compare` which lives inside the `comparator` interface)
   - `Arrays.sort` “calls back” whenever it needs a comparison.
     - Similar to giving your number to someone if they need information.
+
+
+#### 11. Exceptions, Iterators, Object Methods
+
+- Lists and Sets in Java
+  - We built a list from scratch, but Java provides a built-in `List` interface and several implementations, e.g. `ArrayList`.
+  - Demo code
+    ```java
+    // ArrayList
+    import java.util.List;
+    import java.util.ArrayList;
+    
+    public class SimpleBuiltInListExample {
+      public static void main(String[] args) {
+        List<Integer> L = new ArrayList<>();
+        L.add(5);
+        L.add(10);
+        L.add(15);
+        System.out.println(L);
+      }
+    }
+    // Set
+    Set<String> S = new HashSet<>();
+    S.add("Tokyo");
+    S.add("Beijing");	
+    S.add("Lagos");
+    S.add("São Paulo");
+    System.out.println(S.contains("Tokyo"));
+    ```
+- Exceptions
+- Iteration
+  - To support the enhanced for loop:
+    - Add an `iterator()` method to your class that returns an `Iterator<T>`.
+    - The `Iterator<T>` returned should have a useful `hasNext()` and `next()` method.
+    - Add implements `Iterable<T>` to the line defining your class.
+- Object Methods:
+- Equals and toString()
+  - ArraySet toString
+    - Adding even a single character to a string creates an entirely new string. It’s because Strings are “immutable”.
+    - Intuition: Append operation for a StringBuilder is fast.
+  - Equals vs. ==
+    - `==` compares the bits. For references, `==` means “referencing the same object.”
+    - `.equals` for classes. Requires writing a `.equals` method for your classes.
+      - Default implementation of `.equals` uses `==` (probably not what you want).
+    - BTW: Use Arrays.equal or Arrays.deepEquals for arrays
+      - When comparing arrays in Java, it's recommended to use `Arrays.equals()` for one-dimensional arrays and `Arrays.deepEquals()` for multi-dimensional arrays or arrays with nested elements.
+      - `Arrays.deepEquals()` compares the "deep" contents of the arrays, meaning it will recursively compare nested arrays or other non-primitive elements.
+    - The code below is pretty close to what a standard equals method looks like.
+      ```java
+      @Override
+      public boolean equals(Object o) {
+        if (o == null) { return false; }
+        if (this == o) { return true; } // optimization
+        if (this.getClass() != o.getClass()) { return false; }
+        ArraySet<T> other = (ArraySet<T>) o;
+        if (this.size() != other.size()) { return false; }
+          for (T item : this) {
+            if (!other.contains(item)) {
+              return false;
+            }
+          }
+        return true;
+      }
+      ```
+
+#### 12. Coding in the Real World, Review
+
+- Programming in the Real World
+
+#### 13. Asymptotics I
+
+- Intuitive Runtime Characterizations
+- Worst Case Order of Growth
+  - **Justification**: When comparing algorithms, we often care only about the worst case [but we will see exceptions in this course]. 
+  - Simplifications:
+    - Only consider the worst case.
+    - Pick a representative operation (a.k.a. the cost model).
+    - Ignore lower order terms.
+    - Ignore multiplicative constants.
+- Simplified Analysis
+- Big-Theta
+- Big O Notation
+
+#### 14. Disjoint Sets
+
+- Quick Find
+- Quick Union
+- Weighted Quick Union
+  - Track tree size (**number** of elements).
+  - New rule: Always link root of **smaller** tree to **larger** tree.
+  - We used the number of items in a tree to decide upon the root.
+    - Worst case performance for HeightedQuickUnionDS is asymptotically the same! Both are $Θ(\log (N))$.
+    - Resulting code is more complicated with no performance gain.
+  - Performance Summary
+    | Implementation | Constructor | connect | isConnected |
+    | --- | --- | --- | --- |
+    |ListOfSetsDS | $\Theta(N)$ | $O(N)$ | $O(N)$ |
+    |QuickFindDS | $\Theta(N)$ | $\Theta(N)$ | $\Theta(1)$ |
+    |QuickUnionDS | $\Theta(N)$ | $O(N)$ | $O(N)$ |
+    |WeightedQuickUnionDS | $\Theta(N)$ | $O(\log N)$ | $O(\log N)$ |
+- Path Compression 
+  - Clever idea: When we do `isConnected(15, 10)`, tie all nodes seen to the root.
+  - Path compression results in a union/connected operations that are very very close to amortized constant time (amortized constant means “constant on average”)..
+  - A tighter bound: $O(N + M \alpha (N))$, where $\alpha$ is the inverse Ackermann function.
+- Summary
+  - The ideas that made our implementation efficient:
+    - Represent sets as connected components (don’t track individual connections).
+  - ListOfSetsDS: Store connected components as a List of Sets (slow, complicated).
+  - QuickFindDS: Store connected components as set ids.
+  - QuickUnionDS: Store connected components as parent ids.
+  - WeightedQuickUnionDS: Also track the size of each set, and use size to decide on new tree root.
+  - WeightedQuickUnionWithPathCompressionDS: On calls to connect and isConnected, set parent id to the root for all items seen.
+  - Performance
+    | Implementation | Runtime |
+    | --- | --- |
+    |ListOfSetsDS | $O(NM)$ |
+    |QuickFindDS | $\Theta(NM)$ |
+    |QuickUnionDS | $O(NM)$ |
+    |WeightedQuickUnionDS | $O(N+M\log N)$ |
+    |WeightedQuickUnionDSWithPathCompression| $O(N+M\alpha (N))$ |
+
+
 
  
 

@@ -16,6 +16,7 @@
 - [14. Disjoint Sets](#14-disjoint-sets)
 - [15. Asymptotics II](#15-asymptotics-ii)
 - [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
+- [17. B-Trees (2-3, 2-3-4 Trees)](#17-b-trees-2-3-2-3-4-trees)
   
 #### 1. Intro Hello World Java
 
@@ -455,11 +456,50 @@
   - When inserting, always set left/right pointers, even if nothing is actually changing.
   - Avoid “arms length base cases”. Don’t check if left or right is null!
 
+#### 17. B-Trees (2-3, 2-3-4 Trees)
 
-
-
- 
-
+- BST Tree Height
+  - Height varies dramatically between “bushy” and “spindly” trees.
+- Height, Depth, and Performance
+  - The **“depth” of a node** is how far it is from the root
+  - The **“height” of a tree** is the depth of its deepest leaf
+  - The **“average depth”** of a tree is the average depth of a tree’s nodes
+  - Nice Property. Random trees have $Θ(\log N)$ average depth and height.
+- B-trees / 2-3 trees / 2-3-4 trees
+  - Avoiding Imbalance through Overstuffing
+    - Avoid new leaves by “overstuffing” the leaf nodes.
+    - “Overstuffed tree” always has balanced height, because leaf depths never change. Height is just max(depth).
+    - Height is balanced, but we have a new problem: Leaf nodes can get too juicy.
+    - Set a limit L on the number of items, say L=3.
+    - If any node has more than L items, give an item to parent.
+      - Pulling item out of full node splits it into left and right.
+    - Perfect Balance
+      - If we split the root, every node gets pushed down by exactly one level.
+      - If we split a leaf node or internal node, the height doesn’t change.
+  - B-trees of order L=3 (like we used today) are also called a 2-3-4 tree or a 2-4 tree. 
+    - “2-3-4” refers to the number of children that a node can have, e.g. a 2-3-4 tree node may have 2, 3, or 4 children.
+  - B-trees of order L=2 are also called a 2-3 tree.
+  - B-Trees are most popular in two specific contexts:
+    - Small L (L=2 or L=3):
+      - Used as a conceptually simple balanced search tree (as today).
+    - L is very large (say thousands).
+      - Used in practice for databases and filesystems (i.e. systems with very large records).
+- B-Tree Bushiness Invariants
+  - All leaves must be the same distance from the source.
+  - A non-leaf node with k items must have exactly k+1 children.
+  - These invariants guarantee that our trees will be bushy.
+- B-Tree Runtime Analysis
+  - Height of a B-Tree with Limit L
+    - Height: Between $\log_{L+1}(N)$ and $\log_2(N)$
+    - Overall height is therefore $Θ(\log N)$
+  - Runtime for contains
+    - Worst case number of nodes to inspect: H + 1
+    - Worst case number of items to inspect per node: L
+    - Overall runtime: $O(HL)$
+    - Since $H = Θ(\log N)$, overall runtime is $O(L \log N)$.
+    - Since L is a constant, runtime is therefore $O(\log N)$.
+  - Runtime for add
+- Deletion (optional)
 
 
 

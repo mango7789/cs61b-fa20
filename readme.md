@@ -16,7 +16,6 @@
 - [14. Disjoint Sets](#14-disjoint-sets)
 - [15. Asymptotics II](#15-asymptotics-ii)
 - [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
-- [17. B-Trees (2-3, 2-3-4 Trees)](#17-b-trees-2-3-2-3-4-trees)
   
 #### 1. Intro Hello World Java
 
@@ -493,18 +492,65 @@
     - Height: Between $\log_{L+1}(N)$ and $\log_2(N)$
     - Overall height is therefore $Θ(\log N)$
   - Runtime for contains
-    - Worst case number of nodes to inspect: H + 1
-    - Worst case number of items to inspect per node: L
+    - Worst case number of nodes to inspect: $H + 1$
+    - Worst case number of items to inspect per node: $L$
     - Overall runtime: $O(HL)$
     - Since $H = Θ(\log N)$, overall runtime is $O(L \log N)$.
-    - Since L is a constant, runtime is therefore $O(\log N)$.
+    - Since $L$ is a constant, runtime is therefore $O(\log N)$.
   - Runtime for add
 - Deletion (optional)
 
+#### 18. Red Black Trees
 
-
-
-
+- BST Structure and Tree Rotation
+- Red-Black Trees
+  - A BST with left glue links that represents a 2-3 tree is often called a “Left Leaning Red Black Binary Search Tree” or LLRB.
+    - LLRBs are normal BSTs! 
+    - There is a 1-1 correspondence between an LLRB and an equivalent 2-3 tree.
+    - The red is just a convenient fiction. Red links don’t “do” anything special.
+  - What is the maximum height of the corresponding LLRB?
+    - Total height is **H (black)** + <span style="color: red">H + 1 (red)</span> = 2H + 1.
+  - Some handy LLRB properties:
+    - No node has two red links [otherwise it’d be analogous to a 4 node, which are disallowed in 2-3 trees].
+    - Every path from root to a ~~leaf~~(This should say “a null reference”, not “a leaf”.) has same number of black links [because 2-3 trees have the same number of links to every leaf]. LLRBs are therefore balanced.
+- Maintaining 1-1 Correspondence Through Rotations 
+  - #Task1: Insertion Color: Use red! In 2-3 trees new values are ALWAYS added to a leaf node (at first).
+  - #Task2: Insertion on the Right: Right links aren’t allowed, so rotateLeft(E).
+  - New Rule: Representation of Temporary 4-Nodes. **Temporarily violates “no red right links”.**
+  - #Task3: Double Insertion on the Left: Rotate Z right.
+  - #Task4: Splitting Temporary 4-Nodes: Flip the colors of all edges touching B.
+    - Note: This doesn’t change the BST structure/shape.
+  - Summary:
+    - When inserting: Use a red link.
+    - If there is a right leaning “3-node”, we have a Left Leaning Violation.
+      - <u>Rotate left</u> the appropriate node to fix.
+    - If there are two consecutive left links, we have an Incorrect 4 Node Violation.
+      - <u>Rotate right</u> the appropriate node to fix.
+    - If there are any nodes with two red children, we have a Temporary 4 Node.
+      - <u>Color flip</u> the node to emulate the split operation.
+      - We have a right leaning 3-node (B-S). We can fix with <u>rotateLeft</u>.
+    - One last detail: Cascading operations.
+      - It is possible that a rotation or flip operation will cause an additional violation that needs fixing. 
+      - We have a right leaning 3-node (B-S). We can fix with rotateLeft(b).
+- LLRB Runtime and Implementation
+  - Amazingly, turning a BST into an LLRB requires only 3 clever lines of code.
+  ```java
+  private Node put(Node h, Key key, Value val) {
+    if (h == null) { return new Node(key, val, RED); }
+  
+    int cmp = key.compareTo(h.key);
+    if (cmp < 0)      { h.left  = put(h.left,  key, val); }
+    else if (cmp > 0) { h.right = put(h.right, key, val); }
+    else              { h.val   = val;                    }
+  
+    if (isRed(h.right) && !isRed(h.left))      { h = rotateLeft(h);  }
+    if (isRed(h.left)  &&  isRed(h.left.left)) { h = rotateRight(h); }
+    if (isRed(h.left)  &&  isRed(h.right))     { flipColors(h);      } 
+  
+    return h;
+  }
+  ```
+- Search Tree Summary
 
 
  

@@ -16,6 +16,7 @@
 - [14. Disjoint Sets](#14-disjoint-sets)
 - [15. Asymptotics II](#15-asymptotics-ii)
 - [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
+- [19. Range Searching and Multi-Dimensional Data](#19-range-searching-and-multi-dimensional-data)
   
 #### 1. Intro Hello World Java
 
@@ -551,6 +552,48 @@
   }
   ```
 - Search Tree Summary
+
+#### 19. Range Searching and Multi-Dimensional Data
+
+- Range-Finding and Nearest
+  - It turns out that a BST can efficiently support the `select`, `rank`, `subSet`, and `nearest` operations.
+- Multi-dimensional Data
+  - Could just pick one, but you’re losing some of your information about ordering. Results in suboptimal pruning.
+- QuadTrees
+  - Every Node has **four** children:
+    - Top left, a.k.a. northwest.
+    - Top right, a.k.a. northeast.
+    - Bottom left, a.k.a. southwest.
+    - Bottom right, a.k.a. southeast. 
+  - Quadtrees are a form of “spatial partitioning”.
+    - Space is more finely divided in regions where there are more points.
+    - Results in better runtime in many circumstances.
+  - Quadtrees allow us to prune when performing a rectangle search.
+- Higher Dimensional Data
+  - One approach: Use an Oct-tree or Octree.
+  - k-d tree example for 2-d:
+    - Basic idea, root node partitions entire space into left and right (by x).
+    - All depth 1 nodes partition subspace into up and down (by y).
+    - All depth 2 nodes partition subspace into left and right (by x).
+- Uniform Partitioning
+  - All of our approaches today boil down to spatial partitioning.
+    - Uniform partitioning (perfect grid of rectangles).
+    - Quadtrees and KdTrees: Hierarchical partitioning. 
+      - Each node “owns” 4 and 2 subspaces, respectively.
+      - Space is more finely divided into subspaces where there are more points.
+- Summary and Applications
+  - Set operations can be more complex than just contains, e.g.:
+    - **Range Finding**: What are all the objects inside this (rectangular) subspace?
+    - **Nearest**: What is the closest object to a specific point?
+      - Note: Can be generalized to k-nearest.
+  - The most common approach is **spatial partitioning**:
+    - **Quadtree**: Generalized 2D BST where each node “owns” 4 subspaces.
+    - **K-d Tree**: Generalized k-d BST where each node “owns” 2 subspaces.
+      - Dimension of ownership cycles with each level of depth in tree.
+    - **Uniform Partitioning**: Partition space into uniform chunks.
+  - Spatial partitioning allows for **pruning** of the search space.
+
+
 
 
  

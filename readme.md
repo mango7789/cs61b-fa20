@@ -17,6 +17,7 @@
 - [15. Asymptotics II](#15-asymptotics-ii)
 - [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
 - [19. Range Searching and Multi-Dimensional Data](#19-range-searching-and-multi-dimensional-data)
+- [20. Hashing](#20-hashing)
   
 #### 1. Intro Hello World Java
 
@@ -593,7 +594,35 @@
     - **Uniform Partitioning**: Partition space into uniform chunks.
   - Spatial partitioning allows for **pruning** of the search space.
 
+#### 20. Hashing
 
-
-
- 
+- Data Indexed Arrays
+- DataIndexedEnglishWordSet
+- DataIndexedStringSet
+- Integer Overflow and Hash Codes
+- Hash Tables: Handling Collisions
+  - Each bucket in our array is initially empty. When an item x gets added at index h:
+    - If bucket h is empty, we create a new list containing x and store it at index h.
+    - If bucket h is already a list, we add x to this list <u>if it is not already present.</u>
+- Hash Table Performance
+  - One example strategy: When $\frac{N}{M} \geq 1.5$, then double $M$. 
+    - Resizing takes $Θ(N)$ time. Have to redistribute all items!
+    - Most add operations will be $Θ(1)$. Some will be $Θ(N)$ time (to resize).
+      - Similar to our ALists, as long as we resize by a multiplicative factor, the average runtime will still be $Θ(1)$.
+      - Note: We will eventually analyze this in more detail.
+- Hash Tables in Java
+  - Two Important Warnings When Using `HashMaps`/`HashSets`
+    - Warning #1: Never store objects that can change in a HashSet or HashMap!
+      - If an object’s variables changes, then its hashCode changes. May result in items getting lost.
+    - Warning #2: Never override equals without also overriding hashCode.
+      - Can also lead to items getting lost and generally weird behavior.
+      - HashMaps and HashSets use equals to determine if an item exists in a particular bucket.
+  - use `Math.floorMod(x, 4)` to get valid index.
+- Good HashCodes (Extra)
+  - A typical hash code base is a small prime.
+    - Why prime?
+      - Never even: Avoids the overflow issue on previous slide.
+      - Lower chance of resulting hashCode having a bad relationship with the number of buckets: See study guide problems and hw3.
+    - Why small?
+      - Lower cost to compute.
+- Summary

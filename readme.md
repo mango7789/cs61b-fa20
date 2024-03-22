@@ -18,6 +18,8 @@
 - [16. ADTs, Sets, Maps, BSTs](#16-adts-sets-maps-bsts)
 - [19. Range Searching and Multi-Dimensional Data](#19-range-searching-and-multi-dimensional-data)
 - [20. Hashing](#20-hashing)
+- [21. Heaps and PQs](#21-heaps-and-pqs)
+- [22. Prefix Operations and Tries](#22-prefix-operations-and-tries)
   
 #### 1. Intro Hello World Java
 
@@ -626,3 +628,52 @@
     - Why small?
       - Lower cost to compute.
 - Summary
+
+#### 21. Heaps and PQs
+
+- Heaps
+  - Binary min-heap: Binary tree that is complete and obeys min-heap property.
+    - Min-heap: Every node is less than or equal to both of its children.
+    - Complete: Missing items only at the bottom level (if any), all nodes are as far left as possible.
+  - Given a heap, how do we implement PQ operations?
+    - `getSmallest()` - return the item in the root node.
+    - `add(x)` - place the new employee in the last position, and promote as high as possible.
+    - `removeSmallest()` - assassinate the president (of the company), promote the rightmost person in the company to president. Then demote repeatedly, always taking the ‘better’ successor.
+- Tree Representations
+- Data Structures Summary
+
+#### 22. Prefix Operations and Tries
+
+- Tries
+  - Suppose we know that our keys are always strings.
+    - Can use a special data structure known as a Trie.
+    - Basic idea: Store each letter of the string as a node in a tree.
+  - Tries will have great performance on:
+    - get
+    - add
+    - special string operations
+- Trie Implementation and Performance
+- Alternate Child Tracking Strategies
+  - When we implement a Trie, we have to pick a map to our children
+    - DataIndexedCharMap: Very fast, but memory hungry.
+    - Hash Table: Almost as fast, uses less memory.
+    - Balanced BST: A little slower than Hash Table, uses similar amount of memory?
+- Trie String Operations
+- Autocomplete
+  - A More Efficient Autocomplete
+    - Each node stores its own value, as well as the value of its best substring.
+  - Can also merge nodes that are redundant!
+    - This version of trie is known as a “radix tree” or “radix trie”.
+- Trie Summary
+  - When your key is a string, you can use a Trie:
+    - Theoretically better performance than hash table or search tree.
+    - Have to decide on a mapping from letter to node. Three natural choices:
+      - DataIndexedCharMap, i.e. an array of all possible child links.
+      - Bushy BST.
+      - Hash Table.
+  - All three choices are fine, though hash table is probably the most natural.
+  - Supports special string operations like `longestPrefixOf` and `keysWithPrefix`.
+    - `keysWithPrefix` is the heart of important technology like autocomplete.
+    - Optimal implementation of Autocomplete involves use of a priority queue!
+
+

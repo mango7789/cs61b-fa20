@@ -20,6 +20,7 @@
 - [20. Hashing](#20-hashing)
 - [21. Heaps and PQs](#21-heaps-and-pqs)
 - [22. Prefix Operations and Tries](#22-prefix-operations-and-tries)
+- [23. Tree and Graph Traversals](#23-tree-and-graph-traversals)
   
 #### 1. Intro Hello World Java
 
@@ -676,4 +677,61 @@
     - `keysWithPrefix` is the heart of important technology like autocomplete.
     - Optimal implementation of Autocomplete involves use of a priority queue!
 
+#### 23. Tree and Graph Traversals
+
+- Trees and Traversals
+  - Depth First Traversals
+    - 3 types: Preorder, Inorder, Postorder
+    - Basic (rough) idea: Traverse “deep nodes” (e.g. A) before shallow ones (e.g. F).
+    - Traversing a node is different than “visiting” a node. 
+  - Preorder: “Visit” a node, then traverse its children
+  - Inorder traversal: Traverse left child, visit, then traverse right child
+  - Postorder traversal: Traverse left, traverse right, then visit
+  - A Useful Visual Trick (for Humans, Not Algorithms)
+    - Preorder traversal: We trace a path around the graph, **from the top going counter-clockwise**. “Visit” every time we pass the LEFT of a node.
+    - Inorder traversal: “Visit” when you cross the **bottom** of a node.
+    - Postorder traversal: “Visit” when you cross the **right** a node.
+  - What Good Are All These Traversals?
+    - Example: Preorder Traversal for printing directory listing
+    - Example: Postorder Traversal for gathering file sizes.
+- Graphs
+  - A simple graph is a graph with:
+    - No edges that connect a vertex to itself, i.e. no “loops”.
+    - No two edges that connect the same vertices, i.e. no “parallel edges”
+  - Graph Terminology
+    - Graph:
+      - Set of vertices, a.k.a. nodes.
+      - Set of edges: Pairs of vertices.
+      - Vertices with an edge between are adjacent.
+      - Optional: Vertices or edges may have labels (or weights).
+    - A path is a sequence of vertices connected by edges.
+      - A simple path is a path without repeated vertices.
+    - A cycle is a path whose first and last vertices are the same.
+      - A graph with a cycle is ‘cyclic’.
+    - Two vertices are connected if there is a path between them. If all vertices are connected, we say the graph is connected.
+  - Graph Problems
+    - **s-t Path**. Is there a path between vertices s and t?
+    - **Connectivity**. Is the graph connected, i.e. is there a path between all vertices?
+    - **Biconnectivity**. Is there a vertex whose removal disconnects the graph?
+    - **Shortest s-t Path**. What is the shortest path between vertices s and t?
+    - **Cycle Detection**. Does the graph contain any cycles?
+    - **Euler Tour**. Is there a cycle that uses every edge exactly once?
+    - **Hamilton Tour**. Is there a cycle that uses every vertex exactly once?
+    - **Planarity**. Can you draw the graph on paper with no crossing edges?
+    - **Isomorphism**. Are two graphs isomorphic (the same graph in disguise)?
+  - Depth-First Traversal
+  - Tree Vs. Graph Traversals
+    - What we just did in DepthFirstPaths is called “**DFS Preorder**.”
+  - Summary
+    - Graphs are a more general idea than a tree.
+      - A tree is a graph where there are no cycles and every vertex is connected.
+      - Key graph terms: Directed, Undirected, Cyclic, Acyclic, Path, Cycle.
+    - Graph problems vary widely in difficulty. 
+      - Common tool for solving almost all graph problems is traversal.
+      - A traversal is an order in which you visit / act upon vertices.
+      - Tree traversals:
+        - Preorder, inorder, postorder, level order.
+      - Graph traversals:
+        - DFS preorder, DFS postorder, BFS.
+      - By performing actions / setting instance variables during a graph (or tree) traversal, you can solve problems like s-t connectivity or path finding.
 

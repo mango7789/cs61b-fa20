@@ -26,7 +26,6 @@ public class TestMyHashMap {
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1);
             //make sure put is working via containsKey and get
-            System.out.println(Objects.hashCode("hi" + i) + b.get("hi" + i).toString() + "-->" + b.containsKey("hi" + i));
             assertTrue(null != b.get("hi" + i)
                     && b.containsKey("hi" + i));
         }

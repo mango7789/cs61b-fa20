@@ -1,153 +1,194 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Iterator;
+
 
 public class MyHashMap<K, V> implements Map61B<K, V> {
-    private final int ResizeTimes = 2;
-    private int Size = 16;
-    private double LoadFactor = 0.75;
-    private int Count = 0;
-    private ArrayList<Node<K, V>> HashArr = new ArrayList<>(Size);
 
-    private class Node<K, V> {
+    private static final int INITIAL_CAPACITY = 16;
+    private static final double LOAD_FACTOR = 0.75;
+
+    private int size;
+    private int threshold;
+    private BucketEntity<K, V>[] buckets;
+
+    private class BucketEntity<K, V> {
         private K key;
-        private V val;
-        private Node<K, V> next = null;
+        private V value;
+        private BucketEntity<K, V> next;
+        private int hashCode;
 
-        public Node(K k, V v) {
-            this.key = k;
-            this.val = v;
+        public BucketEntity(int hashCode, K key, V value, BucketEntity<K, V> next) {
+            this.hashCode = hashCode;
+            this.key = key;
+            this.value = value;
+            this.next = next;
         }
 
-        public K getkey() {
+        public int getHashCode() {
+            return hashCode;
+        }
+
+        public void setHashCode(int hashCode) {
+            this.hashCode = hashCode;
+        }
+
+        public K getKey() {
             return key;
         }
 
-        public V getval() {
-            return val;
+        public void setKey(K key) {
+            this.key = key;
         }
 
-        public Node<K, V> Next() {
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        public BucketEntity<K, V> getNext() {
             return next;
         }
 
-        public void setVal(V v) {
-            this.val = v;
+        public void setNext(BucketEntity<K, V> next) {
+            this.next = next;
         }
-        public void setNext(Node<K, V> NewNode) {
-            this.next = NewNode;
-        }
-    }
-    private void InitArray() {
-        for (int i = 0; i < Size; i++) {
-            HashArr.add(null);
-        }
-    }
-    public MyHashMap(){
-        InitArray();
-    }
-    public MyHashMap(int initialSize){
-        Size = initialSize;
-        InitArray();
-    }
-    public MyHashMap(int initialSize, double loadFactor){
-        Size = initialSize;
-        LoadFactor = loadFactor;
-        InitArray();
     }
 
-
-    private void resize() {
-        double CurrFactor =  Count / (double) Size;
-        if (CurrFactor < 0.75) {
-            return;
-        }
-        ArrayList<Node<K, V>> TempArr = new ArrayList<>(this.HashArr);
-        Size *= ResizeTimes;
-        HashArr = new ArrayList<>(Size);
-        InitArray();
-        for (Node<K, V> header : TempArr) {
-            if (header == null) {
-                continue;
-            }
-            while (header != null) {
-                put(header.getkey(), header.getval());
-                Count--;
-                header = header.Next();
-            }
-        }
-
+    public MyHashMap() {
+        buckets = new BucketEntity[INITIAL_CAPACITY];
+        threshold = (int) (INITIAL_CAPACITY * LOAD_FACTOR);
+        size = 0;
     }
-    private int ComputeIndex(K k) {
-        return Math.floorMod(Objects.hashCode(k), Size);
+
+    public MyHashMap(int initialSize) {
+        buckets = new BucketEntity[initialSize];
+        threshold = (int) (initialSize * LOAD_FACTOR);
+        size = 0;
     }
+
+    public MyHashMap(int initialSize, double loadFactor) {
+        buckets = new BucketEntity[initialSize];
+        threshold = (int) (initialSize * loadFactor);
+        size = 0;
+    }
+
+    /** Removes all of the mappings from this map. */
     @Override
-    public void clear(){
-        HashArr = new ArrayList<>(Size);
-        InitArray();
-        Count = 0;
+    public void clear() {
+        buckets = new BucketEntity[buckets.length];
+        size = 0;
     }
 
+    /** Returns true if this map contains a mapping for the specified key. */
     @Override
-    public boolean containsKey(K k){
-        return keySet().contains(k);
-    }
-
-    @Override
-    public V get(K k){
-        Node<K, V> IndexHeader = HashArr.get(ComputeIndex(k));
-        if (IndexHeader == null) {
-            return null;
+    public boolean containsKey(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
         }
-        while (IndexHeader != null) {
-            if (IndexHeader.getkey().equals(k)) {
-                return IndexHeader.getval();
+        return get(key) != null;
+    }
+
+    /** Rewrite the hashCode for this class. */
+    private int hash(K key, int length) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        // Cited from https://algs4.cs.princeton.edu/34hash/SeparateChainingHashST.java.html
+        return (key.hashCode() & 0x7fffffff) % length;
+    }
+
+    /**
+     * Returns the value to which the specified key is mapped, or null if this
+     * map contains no mapping for the key.
+     */
+    @Override
+    public V get(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        int hashCode = hash(key, buckets.length);
+        BucketEntity<K, V> entity = get(hashCode, key);
+        return entity == null ? null : entity.getValue();
+    }
+
+    private BucketEntity<K, V> get(int hashCode, K key) {
+        BucketEntity<K, V> entity = buckets[hashCode];
+        while (entity != null) {
+            if (entity.getHashCode() == hashCode && entity.getKey().equals(key)) {
+                return entity;
             }
-            IndexHeader = IndexHeader.Next();
+            entity = entity.getNext();
         }
         return null;
     }
 
+    /** Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        return Count;
+        return size;
     }
 
+    /**
+     * Associates the specified value with the specified key in this map.
+     * If the map previously contained a mapping for the key,
+     * the old value is replaced.
+     */
     @Override
-    public void put(K k, V v) {
-        int KeyIndex = ComputeIndex(k);
-        Node<K, V> header = HashArr.get(KeyIndex);
-        Node<K, V> putNode = new Node<>(k, v);
-        Count++;
-        if (header == null) {
-            HashArr.add(KeyIndex, putNode);
-            return;
-        }
-        while (header.Next() != null) {
-            if (header.getkey().equals(k)) {
-                header.setVal(v);
-                Count--;
+    public void put(K key, V value) {
+        int hashCode = hash(key, buckets.length);
+        BucketEntity<K, V> entity = buckets[hashCode];
+        while (entity != null) {
+            if (entity.getHashCode() == hashCode && entity.getKey().equals(key)) {
+                entity.setValue(value);
                 return;
             }
-            header = header.Next();
+            entity = entity.getNext();
         }
-        if (header.getkey().equals(k)) {
-            header.setVal(v);
-            Count--;
-            return;
-        }
-        header.setNext(putNode);
-        resize();
+        put(hashCode, key, value);
     }
 
-    @Override
-    public Set<K> keySet() {
-        Set<K> keyset = new HashSet<>();
-        for (Node<K, V> header : HashArr) {
-            while (header != null) {
-                keyset.add(header.getkey());
-                header = header.Next();
+    private void put(int hashCode, K key, V value) {
+        BucketEntity<K, V> entity = new BucketEntity<>(hashCode, key, value, buckets[hashCode]);
+        buckets[hashCode] = entity;
+        size += 1;
+        if (size > threshold) {
+            resize(buckets.length * 2);
+        }
+    }
+
+    private void resize(int capacity) {
+        BucketEntity<K, V>[] newBuckets = new BucketEntity[capacity];
+        for (int i = 0; i < buckets.length; i += 1) {
+            BucketEntity<K, V> entity = buckets[i];
+            while (entity != null) {
+                BucketEntity<K, V> oldNext = entity.getNext();
+                int newHashCode = hash(entity.getKey(), newBuckets.length);
+                entity.setNext(newBuckets[newHashCode]);
+                entity.setHashCode(newHashCode);
+                newBuckets[newHashCode] = entity;
+                entity = oldNext;
             }
         }
-        return keyset;
+        buckets = newBuckets;
+        threshold = (int) (buckets.length * LOAD_FACTOR);
+    }
+
+    /** Returns a Set view of the keys contained in this map. */
+    @Override
+    public Set<K> keySet() {
+        Set<K> allKeys = new HashSet<>();
+        for (int i = 0; i < buckets.length; i += 1) {
+            BucketEntity<K, V> entity = buckets[i];
+            while (entity != null) {
+                allKeys.add(entity.getKey());
+                entity = entity.getNext();
+            }
+        }
+        return allKeys;
     }
 
     @Override
@@ -155,15 +196,75 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return keySet().iterator();
     }
 
+    /**
+     * Removes the mapping for the specified key from this map if present.
+     * Not required for Lab 8. If you don't implement this, throw an
+     * UnsupportedOperationException.
+     */
     @Override
-    public V remove(K k) {
-        throw new UnsupportedOperationException();
+    public V remove(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        int hashCode = hash(key, buckets.length);
+        return remove(hashCode, key);
     }
 
-    @Override
-    public V remove(K k, V v) {
-        throw new UnsupportedOperationException();
+    private V remove(int hashCode, K key) {
+        BucketEntity<K, V> entity = buckets[hashCode];
+        BucketEntity<K, V> nextEntity = entity.getNext();
+        if (entity.getKey().equals(key)) {
+            V toRemove = entity.getValue();
+            buckets[hashCode] = nextEntity;
+            size -= 1;
+            return toRemove;
+        } else {
+            while (!nextEntity.getKey().equals(key)) {
+                entity = entity.getNext();
+                nextEntity = nextEntity.getNext();
+            }
+            V toRemove = nextEntity.getValue();
+            entity.setNext(nextEntity.getNext());
+            size -= 1;
+            return toRemove;
+        }
     }
 
+    /**
+     * Removes the entry for the specified key only if it is currently mapped to
+     * the specified value. Not required for Lab 8. If you don't implement this,
+     * throw an UnsupportedOperationException.
+     */
+    @Override
+    public V remove(K key, V value) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        int hashCode = hash(key, buckets.length);
+        return remove(hashCode, key, value);
+    }
+
+    private V remove(int hashCode, K key, V value) {
+        BucketEntity<K, V> entity = buckets[hashCode];
+        BucketEntity<K, V> nextEntity = entity.getNext();
+        if (entity.getKey().equals(key) && entity.getValue().equals(value)) {
+            V toRemove = entity.getValue();
+            buckets[hashCode] = nextEntity;
+            size -= 1;
+            return toRemove;
+        } else {
+            while (!nextEntity.getKey().equals(key)) {
+                entity = entity.getNext();
+                nextEntity = nextEntity.getNext();
+            }
+            if (nextEntity.getValue().equals(value)) {
+                V toRemove = nextEntity.getValue();
+                entity.setNext(nextEntity.getNext());
+                size -= 1;
+                return toRemove;
+            }
+        }
+        return null;
+    }
 
 }

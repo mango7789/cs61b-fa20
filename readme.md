@@ -22,6 +22,7 @@
 - [22. Prefix Operations and Tries](#22-prefix-operations-and-tries)
 - [23. Tree and Graph Traversals](#23-tree-and-graph-traversals)
 - [24. Graph Traversals and Implementations](#24-graph-traversals-and-implementations)
+- [25. Shortest Paths](#25-shortest-paths)
   
 #### 1. Intro Hello World Java
 
@@ -755,4 +756,56 @@
     - For sparse graphs (number of edges << V for most vertices), this is terrible runtime.
     - Thus, we’ll always use adjacency-list unless otherwise stated.
 - Summary
+
+#### 25. Shortest Paths
+
+- BFS vs. DFS for Path Finding
+  - **Correctness**. Do both work for all graphs?
+    - Yes!
+  - **Output Quality**. Does one give better results?
+    - BFS is a 2-for-1 deal, not only do you get paths, but your paths are also guaranteed to be shortest.
+  - **Time Efficiency**. Is one more efficient than the other?
+    - Should be very similar. Both consider all edges twice. Experiments or very careful analysis needed.
+  - **Space Efficiency**. Is one more efficient than the other?
+    - DFS is worse for spindly graphs.
+      - Call stack gets very deep. 
+      - Computer needs Θ(V) memory to remember recursive calls (see CS61C).
+    - BFS is worse for absurdly “bushy” graphs.
+      - Queue gets very large. In worst case, queue will require Θ(V) memory.
+      - Example: 1,000,000 vertices that are all connected. 999,999 will be enqueued at once.
+    - Note: In our implementations, we have to spend Θ(V) memory anyway to track distTo and edgeTo arrays.
+      - Can optimize by storing distTo and edgeTo in a map instead of an array.
+- Dijkstra’s Algorithm
+  - Goal: Find the shortest paths from source vertex s to some target vertex t.
+  - For each edge from v to w, add edge to the SPT **only if that edge yields better distance**.
+- Dijkstra’s Correctness and Runtime
+  - ![](./src/lec25_1.png)
+  - Guaranteed Optimality
+    - Dijkstra’s is guaranteed to be optimal so long as there are no negative edges.
+      - Proof relies on the property that relaxation always fails on edges to visited (white) vertices.
+    - Proof sketch: Assume all edges have non-negative weights.
+      - At start, distTo[source] = 0, which is optimal.
+      - After relaxing all edges from source, let vertex v1 be the vertex with minimum weight, i.e. that is closest to the source. Claim: distTo[v1] is optimal, and thus future relaxations will fail. Why? 
+        - distTo[p] ≥ distTo[v1] for all p, therefore
+        - distTo[p] + w ≥ distTo[v1]
+      - Can use induction to prove that this holds for all vertices after dequeuing.
+  - Dijkstra’s Algorithm Runtime
+    - add: V, each costing O(log V) time.
+    - removeSmallest: V, each costing O(log V) time.
+    - changePriority: E, each costing O(log V) time.
+  - Overall runtime: $O(V*\log(V) + V*\log(V) + E*\log V)$
+- A*
+  - Simple idea:
+    - Visit vertices in order of d(Denver, v) + h(v, goal), where h(v, goal) is an estimate of the distance from v to our goal NYC.
+  - Note, if edge weights are all equal (as here), Dijkstra’s algorithm is just breadth first search.
+- A* Heuristics (188 Preview)
+- Summary: Shortest Paths Problems
+
+
+  
+
+
+
+
+
 

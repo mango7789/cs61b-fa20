@@ -21,6 +21,7 @@
 - [21. Heaps and PQs](#21-heaps-and-pqs)
 - [22. Prefix Operations and Tries](#22-prefix-operations-and-tries)
 - [23. Tree and Graph Traversals](#23-tree-and-graph-traversals)
+- [24. Graph Traversals and Implementations](#24-graph-traversals-and-implementations)
   
 #### 1. Intro Hello World Java
 
@@ -734,4 +735,24 @@
       - Graph traversals:
         - DFS preorder, DFS postorder, BFS.
       - By performing actions / setting instance variables during a graph (or tree) traversal, you can solve problems like s-t connectivity or path finding.
+
+#### 24. Graph Traversals and Implementations
+
+- Graph API
+- Graph Representation and Graph Algorithm Runtimes
+  - Graph Representation 1: Adjacency Matrix.
+  - Representation 2: Edge Sets: Collection of all edges.
+  - Representation 3: Adjacency lists.
+- Graph Traversal Implementations and Runtime
+  - Runtime is O(V+E)
+    - Based on cost model: O(V) dfs calls and O(E) marked[w] checks.
+    - Can’t say O(E) because creating marked array
+    - Note, can’t say Θ(V+E), example: Graph with no edges touching source.
+  - Space is Θ(V).
+    - Need arrays of length V to store information.
+- Layers of Abstraction
+  - If we use an adjacency matrix, BFS and DFS become $O(V^2)$. 
+    - For sparse graphs (number of edges << V for most vertices), this is terrible runtime.
+    - Thus, we’ll always use adjacency-list unless otherwise stated.
+- Summary
 

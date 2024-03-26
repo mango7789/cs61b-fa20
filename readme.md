@@ -23,6 +23,7 @@
 - [23. Tree and Graph Traversals](#23-tree-and-graph-traversals)
 - [24. Graph Traversals and Implementations](#24-graph-traversals-and-implementations)
 - [25. Shortest Paths](#25-shortest-paths)
+- [26. Minimum Spanning Trees](#26-minimum-spanning-trees)
   
 #### 1. Intro Hello World Java
 
@@ -800,6 +801,37 @@
   - Note, if edge weights are all equal (as here), Dijkstra’s algorithm is just breadth first search.
 - A* Heuristics (188 Preview)
 - Summary: Shortest Paths Problems
+
+#### 26. Minimum Spanning Trees
+
+- MST, Cut Property, Generic MST Algorithm
+  - A Useful Tool for Finding the MST: Cut Property
+    - A **cut** is an assignment of a graph’s nodes to two non-empty sets.
+    - A **crossing edge** is an edge which connects a node from one set to a node from the other set.
+    - **Cut property**: Given any cut, minimum weight crossing edge is in the MST.
+  - Generic MST Finding Algorithm
+    - Start with no edges in the MST.
+      - Find a cut that has no crossing edges in the MST. 
+      - Add smallest crossing edge to the MST.
+      - Repeat until V-1 edges.
+- Prim’s Algorithm
+  - Start from some arbitrary start node.
+    - Repeatedly add shortest edge (mark black) that has one node inside the MST under construction.
+    - Repeat until V-1 edges.
+  - Why does Prim’s work? Special case of generic algorithm.
+    - Suppose we add edge e = v->w.
+    - Side 1 of cut is all vertices connected to start, side 2 is all the others.
+    - No crossing edge is black (all connected edges on side 1).
+    - No crossing edge has lower weight (consider in increasing order).
+  - Prim’s and Dijkstra’s algorithms are exactly the same, except Dijkstra’s considers “distance from the source”, and Prim’s considers “distance from the tree.”
+  - Visit order:
+    - Dijkstra’s algorithm visits vertices in order of distance from the source.
+    - Prim’s algorithm visits vertices in order of distance from the MST under construction.
+  - Relaxation:
+    - Relaxation in Dijkstra’s considers an edge better based on distance to source.
+    - Relaxation in Prim’s considers an edge better based on distance to tree.
+- Kruskal’s Algorithm
+
 
 
   

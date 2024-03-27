@@ -17,7 +17,7 @@ public class NaivePointSet implements PointSet{
         double Dist = Double.POSITIVE_INFINITY; Point NearestNode = null;
         for (Point point : Points) {
             double CurrDist = Point.distance(point, CurrPoint);
-            if (CurrDist <= Dist) {
+            if (CurrDist < Dist) {
                 Dist = CurrDist;
                 NearestNode = point;
             }

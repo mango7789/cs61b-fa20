@@ -15,6 +15,7 @@ public class KDTreeTest {
     NaivePointSet nn = new NaivePointSet(List.of(p1, p2, p3));
     KDTree kdt = new KDTree(List.of(p1, p2, p3));
 
+    @Test
     public void testNearest() {
         double min = 0.0;
         double max = 5.0;

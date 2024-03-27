@@ -24,11 +24,11 @@ public class TimeKDTree {
     }
 
     public static void timeAListConstruction() {
-        final int ArrayLength = 4;
+        final int ArrayLength = 7;
         final int ops = 1000000;
         int[] ArrayN = new int[ArrayLength];
         for (int i = 0; i < ArrayLength; i++) {
-            ArrayN[i] = (int) (125 * Math.pow(2, i));
+            ArrayN[i] = (int) (31250 * Math.pow(2, i));
         }
         List<Integer> Ns = new ArrayList<>();
         List<Double> times = new ArrayList<>();

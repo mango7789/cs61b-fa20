@@ -2,23 +2,37 @@ package bearmaps;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
 public class KDTreeTest {
-    Point p1 = new Point(1.1, 2.2);
-    Point p2 = new Point(3.3, 4.4);
-    Point p3 = new Point(-2.9, 4.2);
+    private final int k = 1000;
 
-    NaivePointSet nn = new NaivePointSet(List.of(p1, p2, p3));
-    KDTree kdt = new KDTree(List.of(p1, p2, p3));
+    private List<Point> generatePoints() {
+        List<Point> points = new ArrayList<>();
+        double min = -1000.0;
+        double max = 1000.0;
+        Random random = new Random();
+        for (int i = 0; i < k; i++) {
+            double x = min + (max - min) * random.nextDouble();
+            double y = min + (max - min) * random.nextDouble();
+            points.add(new Point(x, y));
+        }
+        return points;
+    }
 
     @Test
     public void testNearest() {
-        double min = 0.0;
-        double max = 5.0;
+        // generate points
+        List<Point> points = generatePoints();
+        NaivePointSet nn = new NaivePointSet(points);
+        KDTree kdt = new KDTree(points);
+        // set random range for the test cases
+        double min = -1000.0;
+        double max = 1000.0;
         Random random = new Random();
         // generated one hundred tuples of random numbers to test
         for (int i = 0; i < 1000; i++) {
@@ -31,8 +45,6 @@ public class KDTreeTest {
             double kdtDist = Point.distance(testPoint, kdtNear);
             assertEquals(nnDist, kdtDist, 0.0001);
         }
-
-
     }
 
 }

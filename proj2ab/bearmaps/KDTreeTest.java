@@ -21,7 +21,7 @@ public class KDTreeTest {
         double max = 5.0;
         Random random = new Random();
         // generated one hundred tuples of random numbers to test
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             double x = min + (max - min) * random.nextDouble();
             double y = min + (max - min) * random.nextDouble();
             Point testPoint = new Point(x, y);

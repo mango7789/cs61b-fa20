@@ -38,7 +38,9 @@ public class KDTree {
         if (points.isEmpty()) {
             throw new IllegalStateException("The points list can't be null!");
         }
+        // insert head
         this.head = new Node(points.getFirst(), true);
+        // insert other points
         for (int i = 1; i < points.size(); i++) {
             Point CurrPoint = points.get(i);
             insert(CurrPoint);

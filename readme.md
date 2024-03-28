@@ -24,6 +24,7 @@
 - [24. Graph Traversals and Implementations](#24-graph-traversals-and-implementations)
 - [25. Shortest Paths](#25-shortest-paths)
 - [26. Minimum Spanning Trees](#26-minimum-spanning-trees)
+- [27. Software Engineering I](#27-software-engineering-i)
   
 #### 1. Intro Hello World Java
 
@@ -832,7 +833,16 @@
     - Relaxation in Prim’s considers an edge better based on distance to tree.
 - Kruskal’s Algorithm
 
+#### 27. Software Engineering I
 
+- Complexity Defined
+- Symptoms and Causes of Complexity
+  - Symptoms of Complexity
+    - Change amplification
+    - Cognitive load
+    - Unknown unknowns
+- Strategic vs. Tactical Programming
+- Seeking Obvious Code through Decomposition
 
   
 

@@ -2,6 +2,8 @@ package bearmaps;
 
 import java.util.*;
 
+import static bearmaps.PrintHeapDemo.printFancyHeapDrawing;
+
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T>{
 
     private List<PriorityNode> items;
@@ -62,7 +64,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T>{
         if (contains(item)) {
             throw new IllegalArgumentException("The item aleardy exists in the Priority Queue!");
         }
-        items.addLast(new PriorityNode(item, priority));
+        items.add(new PriorityNode(item, priority));
         indices.put(item, size() - 1);
         heapifyUp(size() - 1);
     }
@@ -77,7 +79,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T>{
         if (size() == 0) {
             throw new NoSuchElementException("The Priority Queue is empty!");
         }
-        return items.get(0).getItem();
+        return items.getFirst().getItem();
     }
 
     @Override
@@ -163,7 +165,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T>{
 
     private void heapifyUp(int i) {
         int parent = parent(i);
-        if (parent < 0 || items.get(parent).compareTo(items.get(i)) > 0) { return; }
+        if (i == 0 || parent < 0 || items.get(parent).compareTo(items.get(i)) < 0) { return; }
         swap(parent, i);
         heapifyUp(parent);
     }
@@ -173,4 +175,11 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T>{
         return index != null ? index : -1;
     }
 
+    public void print() {
+        for (int i = 0; i < size(); i++) {
+            System.out.print(items.get(i).getItem() + " ");
+            System.out.print(items.get(i).getPriority() + " --> ");
+        }
+        System.out.println();
+    }
 }

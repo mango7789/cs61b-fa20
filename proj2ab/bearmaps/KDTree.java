@@ -40,76 +40,13 @@ public class KDTree {
         if (points.isEmpty()) {
             throw new IllegalStateException("The points list can't be null!");
         }
+        Collections.shuffle(points);
         this.head = new Node(points.getFirst(), 0);
         // insert other points
         for (int i = 1; i < points.size(); i++) {
             Point CurrPoint = points.get(i);
             insert(CurrPoint);
         }
-//        this.head = buildBalancedKDTree(points, 0, points.size() - 1, true);
-    }
-
-    private Node buildBalancedKDTree(List<Point> points, int start, int end, int depth) {
-        if (start > end) {
-            return null;
-        }
-        // Choose the axis based on state
-        int axis = depth % DIM == 0 ? 0 : 1;
-        int medianIndex = selectMedian(points, start, end, axis);
-        Point medianPoint = points.get(medianIndex);
-
-        Node node = new Node(medianPoint, depth);
-
-        node.setLeft(buildBalancedKDTree(points, start, medianIndex - 1, depth + 1));
-        node.setRight(buildBalancedKDTree(points, medianIndex + 1, end, depth + 1));
-
-        return node;
-    }
-    private int selectMedian(List<Point> points, int start, int end, int axis) {
-        if (start == end) {
-            return start;
-        }
-        // Use median-of-medians algorithm to select pivot
-        int groupSize = 5;
-        for (int i = start; i <= end; i += groupSize) {
-            int groupEnd = Math.min(i + groupSize - 1, end);
-            int medianIndex = partition(points, i, groupEnd, axis);
-            swap(points, medianIndex, start + (i - start) / groupSize);
-        }
-
-        int numMedians = (end - start + groupSize) / groupSize;
-        int medianIndex = start + (numMedians - 1) / 2 * groupSize;
-        return partition(points, start, start + numMedians - 1, axis);
-    }
-
-    private int partition(List<Point> points, int start, int end, int axis) {
-        int pivotIndex = start + (end - start) / 2;
-        Point pivot = points.get(pivotIndex);
-        swap(points, pivotIndex, end);
-        int i = start - 1;
-        for (int j = start; j < end; j++) {
-            if (compare(points.get(j), pivot, axis) < 0) {
-                i++;
-                swap(points, i, j);
-            }
-        }
-        swap(points, i + 1, end);
-        return i + 1;
-    }
-
-    private double compare(Point curr, Point pivot, int axis) {
-        if (axis == 0) {
-            return curr.getX() - pivot.getX();
-        }
-        else {
-            return curr.getY() - pivot.getY();
-        }
-    }
-
-    private void swap(List<Point> points, int i, int j) {
-        Point temp = points.get(i);
-        points.set(i, points.get(j));
-        points.set(j, temp);
     }
 
     private void insert(Point point) {

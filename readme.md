@@ -25,6 +25,8 @@
 - [25. Shortest Paths](#25-shortest-paths)
 - [26. Minimum Spanning Trees](#26-minimum-spanning-trees)
 - [27. Software Engineering I](#27-software-engineering-i)
+- [28. Reductions and Decomposition](#28-reductions-and-decomposition)
+- [29. Basic Sorts](#29-basic-sorts)
   
 #### 1. Intro Hello World Java
 
@@ -844,7 +846,55 @@
 - Strategic vs. Tactical Programming
 - Seeking Obvious Code through Decomposition
 
-  
+#### 28. Reductions and Decomposition
+
+- Topological Sorting
+  - Perform a DFS traversal from every vertex with indegree 0, NOT clearing markings in between traversals.
+    - Record DFS postorder in a list: [7, 4, 1, 3, 0, 6, 5, 2]
+    - Topological ordering is given by the reverse of that list (reverse postorder): [2, 5, 6, 0, 3, 1, 4, 7]
+  - Another better topological sort algorithm:
+    - Run DFS from an arbitrary vertex.
+    - If not all marked, pick an unmarked vertex and do it again.
+    - Repeat until done
+  - A topological sort only exists if the graph is a directed acyclic graph (DAG).
+- Shortest Paths on DAGs
+  - Try to come up with an algorithm for shortest paths on a DAG that works even if there are negative edges.
+    - One simple idea: Visit vertices in topological order.
+      - On each visit, relax all outgoing edges.
+      - Each vertex is visited only when all possible info about it has been used!
+- Longest Paths
+  - DAG LPT solution for graph G:
+    - Form a new copy of the graph G’ with signs of all edge weights flipped.
+    - Run DAGSPT on G’ yielding result X.
+    - Flip signs of all values in X.distTo. X.edgeTo is already correct. 
+- Reduction (170 Preview)
+  - This process is known as reduction. 
+    - Since DAG-SPT can be used to solve DAG-LPT, we say that “DAG-LPT reduces to DAG-SPT”.
+
+#### 29. Basic Sorts
+
+- Selection Sort and Heapsort
+- Mergesort
+- Insertion Sort
+  - On arrays with a small number of inversions, insertion sort is extremely fast.
+    - One exchange per inversion (and number of comparisons is similar). Runtime is $Θ(N + K)$ where K is number of inversions.
+    - Define an **almost sorted** array as one in which number of inversions $\leq cN$ for some $c$. Insertion sort is excellent on these arrays.
+- Shell’s Sort (Extra)
+  - Big idea: Fix multiple inversions at once.
+    - Instead of comparing adjacent items, compare items that are one stride length h apart.
+    - Start with large stride, and decrease towards 1.
+    - Example: h = 7, 3, 1.
+  - h=1 is just normal insertion sort.
+    - By using large strides first, fixes most of the inversions.
+  - We used 7, 3, 1. Can generalize to 2k - 1 from some k down to 1.
+    - Requires $Θ(N^{1.5})$ time in the worst case (see CS170).
+    - Other stride patterns can be faster.
+
+
+ 
+
+
+
 
 
 

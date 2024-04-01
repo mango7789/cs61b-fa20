@@ -15,8 +15,8 @@ import bearmaps.proj2c.SolutionPrinter;
  */
 public class DemoWordPuzzleSolution {
     public static void main(String[] args) {
-        String start = "horse";
-        String goal = "nurse";
+        String start = "word";
+        String goal = "hole";
 
         WordGraph wg = new WordGraph();
 

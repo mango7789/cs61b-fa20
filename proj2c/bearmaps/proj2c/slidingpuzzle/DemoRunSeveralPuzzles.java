@@ -1,5 +1,6 @@
 package bearmaps.proj2c.slidingpuzzle;
 
+import bearmaps.proj2c.AStarSolver;
 import bearmaps.proj2c.LazySolver;
 import bearmaps.proj2c.ShortestPathsSolver;
 import bearmaps.proj2c.SolutionPrinter;
@@ -25,14 +26,14 @@ public class DemoRunSeveralPuzzles {
         String[] puzzleFiles = hardPuzzles;
 
         System.out.println(puzzleFiles.length + " puzzle files being run.");
-        for (int i = 0; i < puzzleFiles.length; i += 1) {
-            Board start = Board.readBoard(puzzleFiles[i]);
+        for (String puzzleFile : puzzleFiles) {
+            Board start = Board.readBoard(puzzleFile);
             int N = start.size();
             Board goal = Board.solved(N);
 
             BoardGraph spg = new BoardGraph();
-            System.out.println(puzzleFiles[i] + ":");
-            ShortestPathsSolver<Board> solver = new LazySolver<>(spg, start, goal, 30);
+            System.out.println(puzzleFile + ":");
+            ShortestPathsSolver<Board> solver = new AStarSolver<>(spg, start, goal, 30);
             SolutionPrinter.summarizeOutcome(solver);
         }
 

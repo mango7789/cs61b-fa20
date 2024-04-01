@@ -78,7 +78,6 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             this.explorationTime = sw.elapsedTime();
         }
 
-
     }
     public SolverOutcome outcome() {
         return outcome;

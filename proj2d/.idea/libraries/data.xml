@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="data">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../library-fa20/data" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../library-fa20/data" recursive="false" />
+  </library>
+</component>

@@ -2,12 +2,10 @@ package bearmaps.proj2c.wordladderpuzzle;
 
 import bearmaps.proj2c.AStarGraph;
 import bearmaps.proj2c.WeightedEdge;
-import edu.princeton.cs.introcs.In;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 /**
  * A class that represents the graph of all english words. Word p has an
@@ -24,13 +22,19 @@ public class WordGraph implements AStarGraph<String> {
     /**
      * Reads the wordfile specified by the wordfile variable.
      */
+
     private void readWords() {
         words = new HashSet<>();
 
-        In in = new In(WORDFILE);
-        while (!in.isEmpty()) {
-            String w = in.readString();
-            words.add(w);
+        try {
+            Scanner in = new Scanner(new File(new File("bearmaps/proj2c/input").getAbsolutePath() + "/" + WORDFILE));
+            while (in.hasNext()) {
+                String w = in.next();
+                words.add(w);
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

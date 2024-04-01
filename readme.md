@@ -27,6 +27,8 @@
 - [27. Software Engineering I](#27-software-engineering-i)
 - [28. Reductions and Decomposition](#28-reductions-and-decomposition)
 - [29. Basic Sorts](#29-basic-sorts)
+- [30. Quick Sort](#30-quick-sort)
+- [31. Software Engineering II](#31-software-engineering-ii)
   
 #### 1. Intro Hello World Java
 
@@ -890,14 +892,38 @@
     - Requires $Θ(N^{1.5})$ time in the worst case (see CS170).
     - Other stride patterns can be faster.
 
+#### 30. Quick Sort
 
- 
+- Backstory, Partitioning
+  - Core ideas:
+    - Selection sort: Find the smallest item and put it at the front.
+      - Heapsort variant: Use MaxPQ to find max element and put at the back.
+    - Merge sort: Merge two sorted halves into one sorted whole.
+    - Insertion sort: Figure out where to insert the current item.
+  - Quicksort:
+    - Much stranger core idea: Partitioning
+- Quicksort
+- Quicksort Runtime
+  - Sorting Summary
+    - Selection sort: Find the smallest item and put it at the front.
+    - Insertion sort: Figure out where to insert the current item.
+    - Merge sort: Merge two sorted halves into one sorted whole.
+    - Partition (quick) sort: Partition items around a pivot.
+- Avoiding the Quicksort Worst Case
+  - The performance of Quicksort (both order of growth and constant factors) depend critically on:
+    - How you select your pivot.
+    - How you partition around that pivot.
+    - Other optimizations you might add to speed things up
+  - What can we do to avoid worst case behavior?
+    - Always use the median as the pivot -- this works.
+    - Randomly swap two indices occasionally.
+      - Sporadic randomness. Maybe works?
+    - Shuffle before quicksorting.
+      - This definitely works and is a harder core version of the above.
+    - Partition from the center of the array: Does not work, can still find bad cases.
 
+#### 31. Software Engineering II
 
-
-
-
-
-
-
+- Build Your Own World
+- Modular Design
 

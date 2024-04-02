@@ -30,6 +30,8 @@
 - [30. Quick Sort](#30-quick-sort)
 - [31. Software Engineering II](#31-software-engineering-ii)
 - [32. More Quick Sort, Sorting Summary](#32-more-quick-sort-sorting-summary)
+- [33. Software Engineering III](#33-software-engineering-iii)
+- [34. Sorting and Algorithmic Bounds](#34-sorting-and-algorithmic-bounds)
   
 #### 1. Intro Hello World Java
 
@@ -940,6 +942,16 @@
       - Mergesort (specifically the TimSort variant) if someArray consists of Objects.
       - Quicksort if someArray consists of primitives.
   - Sounds of Sorting (Fun)
+
+#### 33. Software Engineering III
+
+#### 34. Sorting and Algorithmic Bounds
+
+- Math Problems out of Nowhere
+- Theoretical Bounds on Sorting
+  - Any comparison based sort requires at least order N log N comparisons in its worst case.
+- Sorting Implementations (Extra)
+
 
 
 

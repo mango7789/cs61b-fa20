@@ -29,6 +29,7 @@
 - [29. Basic Sorts](#29-basic-sorts)
 - [30. Quick Sort](#30-quick-sort)
 - [31. Software Engineering II](#31-software-engineering-ii)
+- [32. More Quick Sort, Sorting Summary](#32-more-quick-sort-sorting-summary)
   
 #### 1. Intro Hello World Java
 
@@ -926,4 +927,19 @@
 
 - Build Your Own World
 - Modular Design
+
+#### 32. More Quick Sort, Sorting Summary
+
+- Quick Select
+- Stability, Adaptiveness, Optimization
+  - Other Desirable Sorting Properties: Stability
+    - A sort is said to be stable if order of equivalent items is preserved.
+    - Equivalent items don’t ‘cross over’ when being stably sorted.
+  - `Arrays.sort`
+    - In Java, Arrays.sort(someArray) uses:
+      - Mergesort (specifically the TimSort variant) if someArray consists of Objects.
+      - Quicksort if someArray consists of primitives.
+  - Sounds of Sorting (Fun)
+
+
 

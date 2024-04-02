@@ -66,7 +66,7 @@ public abstract class APIRouteHandler<Req, Res> implements Route {
      * @param requiredParams TestParams to validate.
      * @return A populated map of input parameter to it's numerical value.
      */
-    protected  HashMap<String, Double> getRequestParams(
+    protected HashMap<String, Double> getRequestParams(
             spark.Request req, String[] requiredParams) {
         Set<String> reqParams = req.queryParams();
         HashMap<String, Double> params = new HashMap<>();

@@ -1,11 +1,12 @@
 package bearmaps.proj2d;
 
+import bearmaps.proj2ab.DoubleMapPQ;
+import bearmaps.proj2ab.Point;
+import bearmaps.proj2ab.WeirdPointSet;
 import bearmaps.proj2c.streetmap.StreetMapGraph;
 import bearmaps.proj2c.streetmap.Node;
 
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * An augmented graph that is more powerful that a standard StreetMapGraph.
@@ -31,7 +32,17 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * @return The id of the node in the graph closest to the target.
      */
     public long closest(double lon, double lat) {
-        return 0;
+        List<Point> points = new ArrayList<>();
+        Map<String, Long> Point2Node = new HashMap<>();
+        for (Node node : this.getNodes()) {
+            if (!this.neighbors(node.id()).isEmpty()) {
+                points.add(new Point(node.lon(), node.lat()));
+                Point2Node.put(node.lon() + "," + node.lat(), node.id());
+            }
+        }
+        WeirdPointSet PointSet = new WeirdPointSet(points);
+        Point NearsetPoint = PointSet.nearest(lon, lat);
+        return Point2Node.get(NearsetPoint.getX() + "," + NearsetPoint.getY());
     }
 
 
@@ -44,7 +55,18 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * cleaned <code>prefix</code>.
      */
     public List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        String cleanPrefix = cleanString(prefix);
+        int PrefixLength = cleanPrefix.length();
+        List<String> MatchPrefix = new ArrayList<>();
+        for (Node node : this.getNodes()) {
+            if (node.name() != null) {
+                String cleanName = cleanString(node.name());
+                if (cleanName.substring(0, Math.min(cleanName.length(), PrefixLength)).equals(cleanPrefix)) {
+                    MatchPrefix.add(node.name());
+                }
+            }
+        }
+        return MatchPrefix;
     }
 
     /**
@@ -61,7 +83,19 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * "id" -> Number, The id of the node. <br>
      */
     public List<Map<String, Object>> getLocations(String locationName) {
-        return new LinkedList<>();
+        String cleanLocation = cleanString(locationName);
+        List<Map<String, Object>> locations = new ArrayList<>();
+        for (Node node : this.getNodes()) {
+            if (node.name() != null && cleanString(node.name()).equals(cleanLocation)) {
+                Map<String, Object> locationMap = new HashMap<>();
+                locationMap.put("lat", node.lat());
+                locationMap.put("lon", node.lon());
+                locationMap.put("name", node.name());
+                locationMap.put("id", node.id());
+                locations.add(locationMap);
+            }
+        }
+        return locations;
     }
 
 

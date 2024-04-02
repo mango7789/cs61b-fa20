@@ -109,7 +109,7 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         double TileLatSpan = TotalLatSpan / Tiles1D;
         double ToLeftLon = ullon - ROOT_ULLON, ToLeftLat = ROOT_ULLAT - ullat;
         // find the start index of lon and lat
-        int LonStartIndex = (int) (ToLeftLon / TileLonSpan), LatStartIndex = (int) (ToLeftLat / TileLatSpan);
+        int LonStartIndex = Math.max((int) (ToLeftLon / TileLonSpan), 0), LatStartIndex = Math.max((int) (ToLeftLat / TileLatSpan), 0);
         // find the end index of lon and lat
         int LonEndIndex = Tiles1D, LatEndIndex = Tiles1D;
         for (int col = LonStartIndex + 1; col < Tiles1D; col++) {

@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bearmaps.proj2d.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2d.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2d.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,11 +83,63 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        System.out.println(requestParams);
+        // get the parameters from the input map
+        double lrlon = requestParams.get("lrlon"), ullon = requestParams.get("ullon"), w = requestParams.get("w");
+        double lrlat = requestParams.get("lrlat"), ullat = requestParams.get("ullat");
+        // check if the input is out of bound
+        if (ullat < ROOT_LRLAT || lrlat > ROOT_ULLAT || ullon > ROOT_LRLON
+                || lrlon < ROOT_ULLON || ullat < lrlat || ullon > lrlon) {
+            return queryFail();
+        }
+        // calculate the depth
+        double LonDPP = (lrlon - ullon) / w;
+        double TotalLonSpan = ROOT_LRLON - ROOT_ULLON;
+        double TotalLatSpan = ROOT_ULLAT - ROOT_LRLAT;
+        int depth = 7;
+        for (int d = 0; d < 7; d++) {
+            double ImgDPP = TotalLonSpan / (Math.pow(2, d) * TILE_SIZE);
+            if (ImgDPP <= LonDPP) {
+                depth = d;
+                break;
+            }
+        }
+        int Tiles1D = (int) Math.pow(2, depth);
+        // search the grid
+        double TileLonSpan = TotalLonSpan / Tiles1D;
+        double TileLatSpan = TotalLatSpan / Tiles1D;
+        double ToLeftLon = ullon - ROOT_ULLON, ToLeftLat = ROOT_ULLAT - ullat;
+        // find the start index of lon and lat
+        int LonStartIndex = (int) (ToLeftLon / TileLonSpan), LatStartIndex = (int) (ToLeftLat / TileLatSpan);
+        // find the end index of lon and lat
+        int LonEndIndex = Tiles1D, LatEndIndex = Tiles1D;
+        for (int col = LonStartIndex + 1; col < Tiles1D; col++) {
+            if (ROOT_ULLON + col * TileLonSpan >= lrlon) {
+                LonEndIndex = col;
+                break;
+            }
+        }
+        for (int row = LatStartIndex + 1; row < Tiles1D; row++) {
+            if (ROOT_ULLAT - row * TileLatSpan <= lrlat) {
+                LatEndIndex = row;
+                break;
+            }
+        }
+        // set the values of grid
+        String[][] renderGrid = new String[LatEndIndex - LatStartIndex][LonEndIndex - LonStartIndex];
+        for (int row = LatStartIndex; row < LatEndIndex; row++) {
+            for (int col = LonStartIndex; col < LonEndIndex; col++) {
+                renderGrid[row - LatStartIndex][col - LonStartIndex] = String.format("d%d_x%d_y%d.png", depth, col, row);
+            }
+        }
+        // add the values to results
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+        results.put("render_grid", renderGrid);
+        results.put("raster_ul_lon", ROOT_ULLON + LonStartIndex * TileLonSpan);
+        results.put("raster_ul_lat", ROOT_ULLAT - LatStartIndex * TileLatSpan);
+        results.put("raster_lr_lon", ROOT_ULLON + LonEndIndex * TileLonSpan);
+        results.put("raster_lr_lat", ROOT_ULLAT - LatEndIndex * TileLatSpan);
+        results.put("depth", depth);
+        results.put("query_success", true);
         return results;
     }
 
@@ -143,7 +194,7 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      * In Spring 2016, students had to do this on their own, but in 2017,
      * we made this into provided code since it was just a bit too low level.
      */
-    private  void writeImagesToOutputStream(Map<String, Object> rasteredImageParams,
+    private void writeImagesToOutputStream(Map<String, Object> rasteredImageParams,
                                                   ByteArrayOutputStream os) {
         String[][] renderGrid = (String[][]) rasteredImageParams.get("render_grid");
         int numVertTiles = renderGrid.length;

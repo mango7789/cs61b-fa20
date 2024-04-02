@@ -1,7 +1,10 @@
 package bearmaps.proj2d;
 
+import bearmaps.proj2c.WeightedEdge;
 import bearmaps.proj2c.WeirdSolver;
+import org.apache.commons.math3.geometry.spherical.twod.Vertex;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -42,7 +45,55 @@ public class Router {
     public static List<NavigationDirection> routeDirections(AugmentedStreetMapGraph g,
                                                             List<Long> route) {
         /* fill in for part IV */
-        return null;
+        List<NavigationDirection> navigationDirections = new ArrayList<>();
+        String stackDirection = "Start";
+        String stackName = null;
+        double stackMiles = 0.;
+        // from second node to (last-1)-th node
+        for (int i = 0; i < route.size() - 1; i++) {
+            long prevID = 0, currID, nextID;
+            if (i == 0) {
+                currID = route.getFirst();
+                nextID = route.get(1);
+            } else {
+                prevID = route.get(i - 1);
+                currID = route.get(i);
+                nextID = route.get(i + 1);
+            }
+            // get distance of the road
+            double miles = g.estimatedDistanceToGoal(currID, nextID);
+            // get the name of the road
+            for (WeightedEdge<Long> vertex : g.neighbors(currID)) {
+                if (vertex.to().equals(nextID)) {
+                    // get the current road name
+                    String name = vertex.getName().equals("") ? "unknown road" : vertex.getName();
+                    // check if the current road is the same as former road
+                    if (name.equals(stackName)) {
+                        stackMiles += miles;
+                    } else if (stackName == null) {
+                        stackName = name;
+                        stackMiles += miles;
+                    } else {
+                        navigationDirections.add(NavigationDirection.fromString(
+                                String.format("%s on %s and continue for %.3f miles.", stackDirection, stackName, stackMiles)
+                        ));
+                        double prevBearing = NavigationDirection.bearing(g.lon(prevID), g.lon(currID), g.lat(prevID), g.lat(currID));
+                        double currBearing = NavigationDirection.bearing(g.lon(currID), g.lon(nextID), g.lat(currID), g.lat(nextID));
+                        stackDirection = NavigationDirection.GetDirection(prevBearing, currBearing);
+                        stackName = name;
+                        stackMiles = miles;
+                    }
+                    break;
+                }
+            }
+
+        }
+        if (stackMiles != 0.) {
+            navigationDirections.add(NavigationDirection.fromString(
+                    String.format("%s on %s and continue for %.3f miles.", stackDirection, stackName, stackMiles)
+            ));
+        }
+        return navigationDirections;
     }
 
     /**
@@ -232,6 +283,10 @@ public class Router {
             double x = Math.cos(phi1) * Math.sin(phi2);
             x -= Math.sin(phi1) * Math.cos(phi2) * Math.cos(lambda2 - lambda1);
             return Math.toDegrees(Math.atan2(y, x));
+        }
+
+        public static String GetDirection(double former, double next) {
+            return DIRECTIONS[getDirection(former, next)];
         }
     }
 }

@@ -32,6 +32,9 @@
 - [32. More Quick Sort, Sorting Summary](#32-more-quick-sort-sorting-summary)
 - [33. Software Engineering III](#33-software-engineering-iii)
 - [34. Sorting and Algorithmic Bounds](#34-sorting-and-algorithmic-bounds)
+- [35. Radix Sorts](#35-radix-sorts)
+- [36. Sorting and Data Structures Conclusion](#36-sorting-and-data-structures-conclusion)
+- [37. None (break)](#37-none-break)
   
 #### 1. Intro Hello World Java
 
@@ -951,6 +954,76 @@
 - Theoretical Bounds on Sorting
   - Any comparison based sort requires at least order N log N comparisons in its worst case.
 - Sorting Implementations (Extra)
+
+#### 35. Radix Sorts
+
+- Counting Sort Runtime
+  - Counting sort is nice, but alphabetic restriction limits usefulness.
+    - No obvious way to sort hard-to-count things like Strings.
+- LSD Radix Sort
+  - Not all keys belong to finite alphabets, e.g. Strings.
+    - However, Strings consist of characters from a finite alphabet.
+  - LSD (Least Significant Digit) Radix Sort 
+    - Using Counting Sort
+    - Sort each digit independently from rightmost digit towards left.
+    - What is the runtime of LSD sort?
+      - $Θ(WN+WR)$
+      - N: Number of items, R: size of alphabet, W: Width of each item in # digits
+      - Annoying feature: Runtime depends on length of longest key.
+    - Non-equal Key Lengths
+      - When keys are of different lengths, can treat empty spaces as less than all other characters.
+- MSD Radix Sort
+  - MSD (Most Significant Digit) Radix Sort
+    - Basic idea: Just like LSD, but sort from leftmost digit towards the right.
+    - Key idea: Sort each subproblem separately. 
+    - Runtime of MSD
+      - Best Case. 
+        - We finish in one counting sort pass, looking only at the top digit: $Θ(N + R)$
+      - Worst Case.
+        - We have to look at every character, degenerating to LSD sort: $Θ(WN + WR)$
+
+#### 36. Sorting and Data Structures Conclusion
+
+- Intuitive: Radix Sort vs. Comparison Sorting
+  - What is Merge Sort’s runtime on strings of length W?
+    - $Θ(N \log N)$ if each comparison takes constant time.
+      - Example: Strings are all different in top character.
+    - $Θ(WN \log N)$ if each comparison takes $Θ(W)$ time.
+      - Example: Strings are all equal.
+  - The facts:
+    - Treating alphabet size as constant, LSD Sort has runtime $Θ(WN)$. 
+    - Merge Sort is between $Θ(N \log N)$ and $Θ(WN \log N)$.
+  - Which is better? It depends.
+    - When might LSD sort be faster?
+      - Sufficiently large $N$.
+      - If strings are very similar to each other.
+        - Each Merge Sort comparison costs $Θ(W)$ time.
+    - When might Merge Sort be faster?
+      - If strings are highly dissimilar from each other. 
+      - Each Merge Sort comparison is very fast.
+- Cost Model: Radix Sort vs. Comparison Sorting
+  - Highly Dissimilar Very Long Strings
+    - Mergesort vs. MSD:
+      - Runtimes: MSD < Mergesort < LSD: student analysis.
+    - LSD will be really slow, because it’s going to consider a bunch of meaningless low order characters.
+    - Mergesort is:
+      - MSD is between: $\Theta(N + R)$ [best case, all done up front] and $\theta(WN + WR)$ [worst case]
+- Empirical Study: Radix Sort vs. Comparison Sorting
+  - Computational Experiment Results (Your Answers)
+    - MSD and merge sort implementations are highly optimized versions taken from our optional algorithms textbook.
+    - Does our data match our runtime hypothesis? No! Why not?
+      - MSD needs more memory allocation. (I think not).
+      - MSD across all the strings. Merge, going two adjacent strings at once. Could be caching related. 
+      - Mergesort: Uses the built in compareTo method -- this could be an issue, could be optimized in some crazy way.
+      - There are potentially extra copy operations in MSD.
+- Rerunning Our Empirical Study With No JIT
+- Radix Sorting Integers (61C Preview)
+  - Results of a computational experiment:
+    - Treating as a base 256 number (4 digits), LSD radix sorting integers easily defeats Quicksort.
+- Sorting Summary
+
+#### 37. None (break)
+
 
 
 

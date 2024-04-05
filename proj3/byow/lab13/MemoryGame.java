@@ -44,20 +44,34 @@ public class MemoryGame {
         StdDraw.enableDoubleBuffering();
 
         //TODO: Initialize random number generator
+        this.rand = new Random(seed);
     }
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        StringBuilder generatedString = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            generatedString.append(CHARACTERS[rand.nextInt(26)]);
+        }
+        return generatedString.toString();
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
+        StdDraw.text(8 * this.width, 8 * this.height, s);
+        StdDraw.show();
     }
 
     public void flashSequence(String letters) {
         //TODO: Display each character in letters, making sure to blank the screen between letters
+        for (int i = 0; i < letters.length(); i++) {
+            StdDraw.clear();
+            drawFrame(String.valueOf(letters.charAt(i)));
+            StdDraw.pause(1000);
+            StdDraw.clear();
+            StdDraw.pause(500);
+        }
     }
 
     public String solicitNCharsInput(int n) {

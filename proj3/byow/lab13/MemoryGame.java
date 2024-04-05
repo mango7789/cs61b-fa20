@@ -19,12 +19,12 @@ public class MemoryGame {
                                                    "Too easy for you!", "Wow, so impressive!"};
 
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Please enter a seed");
-            return;
-        }
+//        if (args.length < 1) {
+//            System.out.println("Please enter a seed");
+//            return;
+//        }
 
-        long seed = Long.parseLong(args[0]);
+        long seed = Long.parseLong("256");
         MemoryGame game = new MemoryGame(40, 40, seed);
         game.startGame();
     }
@@ -76,13 +76,38 @@ public class MemoryGame {
 
     public String solicitNCharsInput(int n) {
         //TODO: Read n letters of player input
-        return null;
+        StringBuilder input = new StringBuilder();
+        while (input.length() < n) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char key = StdDraw.nextKeyTyped();
+                input.append(key);
+                StdDraw.clear();
+                StdDraw.text(8 * this.width, 8 * this.height, input.toString());
+                StdDraw.show();
+            }
+        }
+        return input.toString();
     }
 
     public void startGame() {
         //TODO: Set any relevant variables before the game starts
-
+        this.round = 0;
+        this.gameOver = false;
+        this.playerTurn = false;
         //TODO: Establish Engine loop
+        while (!gameOver) {
+            this.round += 1;
+            drawFrame(String.format("Round: %2d", this.round));
+            String compInput = generateRandomString(this.round);
+            flashSequence(compInput);
+            this.playerTurn = true;
+            String userInput = solicitNCharsInput(this.round);
+            if (!compInput.equals(userInput)) {
+                drawFrame(String.format( "Game Over! You made it to round: %2d", this.round));
+                this.gameOver = true;
+            }
+            this.playerTurn = false;
+        }
     }
 
 }

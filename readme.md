@@ -35,6 +35,9 @@
 - [35. Radix Sorts](#35-radix-sorts)
 - [36. Sorting and Data Structures Conclusion](#36-sorting-and-data-structures-conclusion)
 - [37. None (break)](#37-none-break)
+- [38. Compression](#38-compression)
+- [39. Compression, Complexity, and P=NP?](#39-compression-complexity-and-pnp)
+- [40. Summary, Fun](#40-summary-fun)
   
 #### 1. Intro Hello World Java
 
@@ -1023,6 +1026,37 @@
 - Sorting Summary
 
 #### 37. None (break)
+
+#### 38. Compression
+
+- Prefix Free Codes
+  - A prefix-free code is one in which no codeword is a prefix of any other
+- Shannon Fano Codes (Extra)
+  - Shannon-Fano coding is NOT optimal. Does a good job, but possible to find ‘better’ codes (see CS170)
+- Huffman Coding
+  - Calculate relative frequencies.
+    - Assign each symbol to a node with weight = relative frequency.
+    - Take the two smallest nodes and merge them into a super node with weight equal to sum of weights.
+    - Repeat until everything is part of a tree.
+- Huffman Coding Data Structures
+- Huffman Coding in Practice
+- Compression Theory
+- LZW Style Compression (Extra)
+- Lossy Compression (Extra)
+- Summary
+  - Compression: Make common bitstreams more compact.
+    - Huffman coding:
+      - Represents common symbols as codeword with fewer bits.
+      - Uses something like Map<Character, BitSeq> for compression.
+      - Uses something like TrieMap<Character> for decompression.
+    - LZW:
+      - Represents multiple symbols with a single codeword.
+      - Uses something like TrieMap<Integer> for compression.
+      - Uses something like Map<Character, SymbolSeq> for decompression.
+
+#### 39. Compression, Complexity, and P=NP?
+
+#### 40. Summary, Fun
 
 
 
